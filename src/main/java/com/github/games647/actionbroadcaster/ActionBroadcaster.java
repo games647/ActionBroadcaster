@@ -73,7 +73,7 @@ public class ActionBroadcaster {
                 .child(new RemoveCommand(this), "rem", "remove", "delete")
                 .child(new BroadcastCommand(this), "broadcast", "announce")
                 .build();
-        commandDispatcher.register(this, mainCommands, pluginContainer.getId(), "am");
+        commandDispatcher.register(this, mainCommands, pluginContainer.getId(), "ab");
     }
 
 //    @Subscribe
