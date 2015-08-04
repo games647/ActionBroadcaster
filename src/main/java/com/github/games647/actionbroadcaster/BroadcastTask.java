@@ -23,6 +23,7 @@ public class BroadcastTask implements Runnable {
             return;
         }
 
+        currentIndex++;
         if (plugin.getConfigManager().getConfiguration().isRandom()) {
             currentIndex = new Random().nextInt(messages.size() - 1);
         } else if (currentIndex >= messages.size()) {

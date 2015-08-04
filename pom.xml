@@ -10,8 +10,8 @@
 
     <name>ActionBroadcaster</name>
     <version>0.1</version>
-	<description>Sponge plugin that broadcasts message in a configurable interval into action chat slot</description>
-	<url>https://github.com/games647/ActionBroadcaster</url>
+    <description>Sponge plugin that broadcasts message in a configurable interval into action chat slot</description>
+    <url>https://github.com/games647/ActionBroadcaster</url>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>

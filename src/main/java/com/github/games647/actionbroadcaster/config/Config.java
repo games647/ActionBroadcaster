@@ -15,7 +15,7 @@ public class Config {
     private int interval = 320;
 
     @Setting(value = "random", comment = "Should the message be selected for displaying in random order")
-    private boolean random = false;
+    private boolean random = true;
 
     @Setting(value = "messages"
             , comment = "All messages which will be displayed. Use § as color char for colored messages")

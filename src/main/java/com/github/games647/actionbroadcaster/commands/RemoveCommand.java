@@ -4,8 +4,8 @@ import com.github.games647.actionbroadcaster.ActionBroadcaster;
 import com.google.common.base.Optional;
 import com.google.common.collect.Lists;
 import com.google.common.primitives.Ints;
-import java.util.Arrays;
 
+import java.util.Arrays;
 import java.util.List;
 
 import org.spongepowered.api.text.Text;

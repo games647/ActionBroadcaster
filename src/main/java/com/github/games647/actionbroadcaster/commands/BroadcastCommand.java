@@ -6,8 +6,8 @@ import com.google.common.primitives.Ints;
 
 import java.util.Collections;
 import java.util.List;
-import org.spongepowered.api.entity.player.Player;
 
+import org.spongepowered.api.entity.player.Player;
 import org.spongepowered.api.text.Text;
 import org.spongepowered.api.text.Texts;
 import org.spongepowered.api.text.chat.ChatTypes;
