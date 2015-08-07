@@ -23,14 +23,14 @@ import org.spongepowered.api.event.state.ServerAboutToStartEvent;
 import org.spongepowered.api.plugin.Plugin;
 import org.spongepowered.api.service.command.CommandService;
 import org.spongepowered.api.event.Subscribe;
+import org.spongepowered.api.event.entity.living.LivingChangeHealthEvent;
 import org.spongepowered.api.plugin.PluginContainer;
 import org.spongepowered.api.service.config.DefaultConfig;
+import org.spongepowered.api.text.Texts;
 import org.spongepowered.api.util.command.spec.CommandSpec;
 
-@Plugin(id = "actionbroadcaster", name = "ActionBroadcaster", version = "0.1")
+@Plugin(id = "actionbroadcaster", name = "ActionBroadcaster", version = "0.1.2")
 public class ActionBroadcaster {
-
-    private static final char COLOR_CHAR = '\u00A7';
 
     private final PluginContainer pluginContainer;
     private final Logger logger;
@@ -76,11 +76,6 @@ public class ActionBroadcaster {
         commandDispatcher.register(this, mainCommands, pluginContainer.getId(), "ab");
     }
 
-//    @Subscribe
-//    public void onPostInit(PostInitializationEvent postInitEvent) {
-//        //inter-plugin communication + Plugins providing an API should be ready to accept basic requests.
-//    }
-
     @Subscribe
     public void onServerStart(ServerAboutToStartEvent serverAboutToStartEvent) {
         //The server instance exists, but worlds are not yet loaded.
@@ -93,16 +88,17 @@ public class ActionBroadcaster {
         }
     }
 
-//    @Subscribe
-//    public void onServerStopping(ServerStoppingEvent serverStoppingEvent) {
-//        //This state occurs immediately before the final tick, before the worlds are saved.
-//    }
+    @Subscribe
+    public void onServerStart(LivingChangeHealthEvent changeHealth) {
+        ;
+        System.out.println(changeHealth.getEntity());
+    }
 
     public String translateColorCodes(String rawInput) {
         char[] input = rawInput.toCharArray();
         for (int i = 0; i < input.length - 1; i++) {
             if (input[i] == '&' && "0123456789abcdefklmnor".indexOf(input[i + 1]) > -1) {
-                input[i] = COLOR_CHAR;
+                input[i] = Texts.getLegacyChar();
                 input[i + 1] = Character.toLowerCase(input[i + 1]);
             }
         }
