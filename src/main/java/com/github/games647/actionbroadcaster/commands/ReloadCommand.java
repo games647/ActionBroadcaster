@@ -36,7 +36,7 @@ public class ReloadCommand implements CommandCallable {
         }
 
         if (plugin.getConfigManager().getConfiguration().isEnabled()) {
-            plugin.getGame().getScheduler().getTaskBuilder()
+            plugin.getGame().getScheduler().createTaskBuilder()
                     .execute(new BroadcastTask(plugin))
                     .name("Action Broadcaster")
                     .interval(plugin.getConfigManager().getConfiguration().getInterval(), TimeUnit.SECONDS)

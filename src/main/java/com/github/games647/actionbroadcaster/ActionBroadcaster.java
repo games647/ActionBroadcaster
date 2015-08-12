@@ -29,7 +29,7 @@ import org.spongepowered.api.service.config.DefaultConfig;
 import org.spongepowered.api.text.Texts;
 import org.spongepowered.api.util.command.spec.CommandSpec;
 
-@Plugin(id = "actionbroadcaster", name = "ActionBroadcaster", version = "0.1.2")
+@Plugin(id = "actionbroadcaster", name = "ActionBroadcaster", version = "0.1.3")
 public class ActionBroadcaster {
 
     private final PluginContainer pluginContainer;
@@ -80,7 +80,7 @@ public class ActionBroadcaster {
     public void onServerStart(ServerAboutToStartEvent serverAboutToStartEvent) {
         //The server instance exists, but worlds are not yet loaded.
         if (configuration.getConfiguration() != null && configuration.getConfiguration().isEnabled()) {
-            game.getScheduler().getTaskBuilder()
+            game.getScheduler().createTaskBuilder()
                     .execute(new BroadcastTask(this))
                     .name("Action Broadcaster")
                     .interval(configuration.getConfiguration().getInterval(), TimeUnit.SECONDS)
