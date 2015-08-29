@@ -23,13 +23,12 @@ import org.spongepowered.api.event.state.ServerAboutToStartEvent;
 import org.spongepowered.api.plugin.Plugin;
 import org.spongepowered.api.service.command.CommandService;
 import org.spongepowered.api.event.Subscribe;
-import org.spongepowered.api.event.entity.living.LivingChangeHealthEvent;
 import org.spongepowered.api.plugin.PluginContainer;
 import org.spongepowered.api.service.config.DefaultConfig;
 import org.spongepowered.api.text.Texts;
 import org.spongepowered.api.util.command.spec.CommandSpec;
 
-@Plugin(id = "actionbroadcaster", name = "ActionBroadcaster", version = "0.1.3")
+@Plugin(id = "actionbroadcaster", name = "ActionBroadcaster", version = "0.1.4")
 public class ActionBroadcaster {
 
     private final PluginContainer pluginContainer;
@@ -88,22 +87,8 @@ public class ActionBroadcaster {
         }
     }
 
-    @Subscribe
-    public void onServerStart(LivingChangeHealthEvent changeHealth) {
-        ;
-        System.out.println(changeHealth.getEntity());
-    }
-
     public String translateColorCodes(String rawInput) {
-        char[] input = rawInput.toCharArray();
-        for (int i = 0; i < input.length - 1; i++) {
-            if (input[i] == '&' && "0123456789abcdefklmnor".indexOf(input[i + 1]) > -1) {
-                input[i] = Texts.getLegacyChar();
-                input[i + 1] = Character.toLowerCase(input[i + 1]);
-            }
-        }
-
-        return new String(input);
+        return Texts.replaceCodes(rawInput, '&');
     }
 
     public Settings getConfigManager() {

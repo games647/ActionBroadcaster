@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Random;
 
 import org.spongepowered.api.entity.player.Player;
+import org.spongepowered.api.text.Texts;
 import org.spongepowered.api.text.chat.ChatTypes;
 
 public class BroadcastTask implements Runnable {
@@ -25,7 +26,7 @@ public class BroadcastTask implements Runnable {
 
         currentIndex++;
         if (plugin.getConfigManager().getConfiguration().isRandom()) {
-            currentIndex = new Random().nextInt(messages.size()) - 1;
+            currentIndex = new Random().nextInt(messages.size());
         } else if (currentIndex >= messages.size()) {
             //we reached the end
             currentIndex = 0;
@@ -35,7 +36,7 @@ public class BroadcastTask implements Runnable {
         //you cannot send action messages with message sink
         for (Player player : plugin.getGame().getServer().getOnlinePlayers()) {
             if (player.hasPermission(plugin.getContainer().getId() + ".receive")) {
-                player.sendMessage(ChatTypes.ACTION_BAR, message);
+                player.sendMessage(ChatTypes.ACTION_BAR, Texts.of(message));
             }
         }
     }

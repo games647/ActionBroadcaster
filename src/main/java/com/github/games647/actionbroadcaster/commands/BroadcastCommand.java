@@ -40,7 +40,7 @@ public class BroadcastCommand implements CommandCallable {
                 } else {
                     String message = messages.get(index - 1);
                     for (Player onlinePlayer : plugin.getGame().getServer().getOnlinePlayers()) {
-                        onlinePlayer.sendMessage(ChatTypes.ACTION_BAR, message);
+                        onlinePlayer.sendMessage(ChatTypes.ACTION_BAR, Texts.of(message));
                     }
 
                     source.sendMessage(Texts.of(TextColors.DARK_GREEN, "Broadcasted message: "));
@@ -52,7 +52,7 @@ public class BroadcastCommand implements CommandCallable {
         }
 
         for (Player onlinePlayer : plugin.getGame().getServer().getOnlinePlayers()) {
-            onlinePlayer.sendMessage(ChatTypes.ACTION_BAR, plugin.translateColorCodes(arg));
+            onlinePlayer.sendMessage(ChatTypes.ACTION_BAR, Texts.of(plugin.translateColorCodes(arg)));
         }
 
         source.sendMessage(Texts.of(TextColors.DARK_GREEN, "Broadcasted message"));
