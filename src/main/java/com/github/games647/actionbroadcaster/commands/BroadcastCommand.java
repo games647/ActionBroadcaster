@@ -7,7 +7,7 @@ import com.google.common.primitives.Ints;
 import java.util.Collections;
 import java.util.List;
 
-import org.spongepowered.api.entity.player.Player;
+import org.spongepowered.api.entity.living.player.Player;
 import org.spongepowered.api.text.Text;
 import org.spongepowered.api.text.Texts;
 import org.spongepowered.api.text.chat.ChatTypes;
@@ -32,7 +32,7 @@ public class BroadcastCommand implements CommandCallable {
         if (args.length >= 1) {
             Integer firstArg = Ints.tryParse(args[0]);
             if (firstArg != null) {
-                int index = firstArg.intValue();
+                int index = firstArg;
                 List<String> messages = plugin.getConfigManager().getConfiguration().getMessages();
                 if (index > messages.size()) {
                     source.sendMessage(Texts.of(TextColors.DARK_RED, index + "/" + messages.size()
@@ -52,6 +52,7 @@ public class BroadcastCommand implements CommandCallable {
         }
 
         for (Player onlinePlayer : plugin.getGame().getServer().getOnlinePlayers()) {
+
             onlinePlayer.sendMessage(ChatTypes.ACTION_BAR, Texts.of(plugin.translateColorCodes(arg)));
         }
 

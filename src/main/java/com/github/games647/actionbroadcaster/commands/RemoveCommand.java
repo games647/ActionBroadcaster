@@ -5,7 +5,6 @@ import com.google.common.base.Optional;
 import com.google.common.collect.Lists;
 import com.google.common.primitives.Ints;
 
-import java.util.Arrays;
 import java.util.List;
 
 import org.spongepowered.api.text.Text;
@@ -28,19 +27,18 @@ public class RemoveCommand implements CommandCallable {
     @Override
     public CommandResult process(CommandSource source, String arg) throws CommandException {
         String[] args = arg.split(" ");
-        System.out.println(Arrays.toString(args));
         if (args.length >= 1) {
             String index = args[0];
             Integer indexParsed = Ints.tryParse(index);
             if (indexParsed == null) {
                 source.sendMessage(Texts.of(TextColors.DARK_RED, index + " is not a index number"));
             } else {
-                int intValue = indexParsed.intValue();
+                int intValue = indexParsed;
 
                 List<String> messages = plugin.getConfigManager().getConfiguration().getMessages();
                 if (indexParsed > messages.size()) {
                     source.sendMessage(Texts.of(TextColors.DARK_RED
-                            , index + "/" + messages.size()
+                            , index + '/' + messages.size()
                                   + " Number is higher than the available messages"));
                 } else {
                     String removedMessage = messages.remove(intValue - 1);

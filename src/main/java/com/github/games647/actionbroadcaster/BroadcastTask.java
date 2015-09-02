@@ -3,7 +3,7 @@ package com.github.games647.actionbroadcaster;
 import java.util.List;
 import java.util.Random;
 
-import org.spongepowered.api.entity.player.Player;
+import org.spongepowered.api.entity.living.player.Player;
 import org.spongepowered.api.text.Texts;
 import org.spongepowered.api.text.chat.ChatTypes;
 

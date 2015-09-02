@@ -17,12 +17,12 @@ import ninja.leaping.configurate.loader.ConfigurationLoader;
 
 import org.slf4j.Logger;
 import org.spongepowered.api.Game;
-import org.spongepowered.api.event.state.InitializationEvent;
-import org.spongepowered.api.event.state.PreInitializationEvent;
-import org.spongepowered.api.event.state.ServerAboutToStartEvent;
+import org.spongepowered.api.event.Listener;
+import org.spongepowered.api.event.game.state.GameAboutToStartServerEvent;
+import org.spongepowered.api.event.game.state.GameInitializationEvent;
+import org.spongepowered.api.event.game.state.GamePreInitializationEvent;
 import org.spongepowered.api.plugin.Plugin;
 import org.spongepowered.api.service.command.CommandService;
-import org.spongepowered.api.event.Subscribe;
 import org.spongepowered.api.plugin.PluginContainer;
 import org.spongepowered.api.service.config.DefaultConfig;
 import org.spongepowered.api.text.Texts;
@@ -52,16 +52,16 @@ public class ActionBroadcaster {
         this.game = game;
     }
 
-    @Subscribe //During this state, the plugin gets ready for initialization. Logger and config
-    public void onPreInit(PreInitializationEvent preInitEvent) {
+    @Listener //During this state, the plugin gets ready for initialization. Logger and config
+    public void onPreInit(GamePreInitializationEvent preInitEvent) {
         logger.info("Loading {} v{}", pluginContainer.getName(), pluginContainer.getVersion());
 
         configuration = new Settings(configManager, defaultConfigFile, this);
         configuration.load();
     }
 
-    @Subscribe //During this state, the plugin should finish any work needed in order to be functional. Commands register + events
-    public void onInit(InitializationEvent initEvent) {
+    @Listener //During this state, the plugin should finish any work needed in order to be functional. Commands register + events
+    public void onInit(GameInitializationEvent initEvent) {
         //register commands
         CommandService commandDispatcher = initEvent.getGame().getCommandDispatcher();
         CommandSpec mainCommands = CommandSpec.builder()
@@ -75,8 +75,8 @@ public class ActionBroadcaster {
         commandDispatcher.register(this, mainCommands, pluginContainer.getId(), "ab");
     }
 
-    @Subscribe
-    public void onServerStart(ServerAboutToStartEvent serverAboutToStartEvent) {
+    @Listener
+    public void onServerStart(GameAboutToStartServerEvent serverAboutToStartEvent) {
         //The server instance exists, but worlds are not yet loaded.
         if (configuration.getConfiguration() != null && configuration.getConfiguration().isEnabled()) {
             game.getScheduler().createTaskBuilder()
