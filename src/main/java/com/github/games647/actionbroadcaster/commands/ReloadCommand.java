@@ -2,10 +2,10 @@ package com.github.games647.actionbroadcaster.commands;
 
 import com.github.games647.actionbroadcaster.BroadcastTask;
 import com.github.games647.actionbroadcaster.ActionBroadcaster;
-import com.google.common.base.Optional;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 import java.util.concurrent.TimeUnit;
 
 import org.spongepowered.api.service.scheduler.Task;

@@ -1,11 +1,11 @@
 package com.github.games647.actionbroadcaster.commands;
 
 import com.github.games647.actionbroadcaster.ActionBroadcaster;
-import com.google.common.base.Optional;
 import com.google.common.primitives.Ints;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 
 import org.spongepowered.api.entity.living.player.Player;
 import org.spongepowered.api.text.Text;
@@ -52,7 +52,6 @@ public class BroadcastCommand implements CommandCallable {
         }
 
         for (Player onlinePlayer : plugin.getGame().getServer().getOnlinePlayers()) {
-
             onlinePlayer.sendMessage(ChatTypes.ACTION_BAR, Texts.of(plugin.translateColorCodes(arg)));
         }
 

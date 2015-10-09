@@ -9,7 +9,7 @@
     <packaging>jar</packaging>
 
     <name>ActionBroadcaster</name>
-    <version>0.1.4</version>
+    <version>0.1.6</version>
     <description>Sponge plugin that broadcasts message in a configurable interval into action chat slot</description>
     <url>https://github.com/games647/ActionBroadcaster</url>
 
@@ -46,7 +46,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
-                <version>3.2</version>
+                <version>3.3</version>
                 <configuration>
                     <source>1.8</source>
                     <target>1.8</target>

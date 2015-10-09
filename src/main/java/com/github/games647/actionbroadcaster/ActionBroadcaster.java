@@ -28,7 +28,7 @@ import org.spongepowered.api.service.config.DefaultConfig;
 import org.spongepowered.api.text.Texts;
 import org.spongepowered.api.util.command.spec.CommandSpec;
 
-@Plugin(id = "actionbroadcaster", name = "ActionBroadcaster", version = "0.1.4")
+@Plugin(id = "actionbroadcaster", name = "ActionBroadcaster", version = "0.1.6")
 public class ActionBroadcaster {
 
     private final PluginContainer pluginContainer;

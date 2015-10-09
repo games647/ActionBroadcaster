@@ -1,11 +1,11 @@
 package com.github.games647.actionbroadcaster.commands;
 
 import com.github.games647.actionbroadcaster.ActionBroadcaster;
-import com.google.common.base.Optional;
 import com.google.common.collect.Lists;
 import com.google.common.primitives.Ints;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.spongepowered.api.text.Text;
 import org.spongepowered.api.text.Texts;
@@ -78,7 +78,7 @@ public class RemoveCommand implements CommandCallable {
 
     @Override
     public Optional<? extends Text> getHelp(CommandSource source) {
-        return Optional.absent();
+        return Optional.empty();
     }
 
     @Override
