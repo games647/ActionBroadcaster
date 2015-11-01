@@ -40,7 +40,7 @@ public class ReloadCommand implements CommandCallable {
                     .execute(new BroadcastTask(plugin))
                     .name("Action Broadcaster")
                     .interval(plugin.getConfigManager().getConfiguration().getInterval(), TimeUnit.SECONDS)
-                    .submit(this);
+                    .submit(plugin);
         }
 
         source.sendMessage(Texts.builder("Reloaded the plugin").color(TextColors.DARK_RED).build());
