@@ -17,18 +17,18 @@ import ninja.leaping.configurate.loader.ConfigurationLoader;
 
 import org.slf4j.Logger;
 import org.spongepowered.api.Game;
+import org.spongepowered.api.command.CommandManager;
+import org.spongepowered.api.command.spec.CommandSpec;
+import org.spongepowered.api.config.DefaultConfig;
 import org.spongepowered.api.event.Listener;
 import org.spongepowered.api.event.game.state.GameAboutToStartServerEvent;
 import org.spongepowered.api.event.game.state.GameInitializationEvent;
 import org.spongepowered.api.event.game.state.GamePreInitializationEvent;
 import org.spongepowered.api.plugin.Plugin;
-import org.spongepowered.api.service.command.CommandService;
 import org.spongepowered.api.plugin.PluginContainer;
-import org.spongepowered.api.service.config.DefaultConfig;
 import org.spongepowered.api.text.Texts;
-import org.spongepowered.api.util.command.spec.CommandSpec;
 
-@Plugin(id = "actionbroadcaster", name = "ActionBroadcaster", version = "0.1.6")
+@Plugin(id = "actionbroadcaster", name = "ActionBroadcaster", version = "0.1.7")
 public class ActionBroadcaster {
 
     private final PluginContainer pluginContainer;
@@ -63,7 +63,7 @@ public class ActionBroadcaster {
     @Listener //During this state, the plugin should finish any work needed in order to be functional. Commands register + events
     public void onInit(GameInitializationEvent initEvent) {
         //register commands
-        CommandService commandDispatcher = initEvent.getGame().getCommandDispatcher();
+        CommandManager commandDispatcher = initEvent.getGame().getCommandManager();
         CommandSpec mainCommands = CommandSpec.builder()
                 .executor(new VersionCommand(this))
                 .child(new ReloadCommand(this), "reload", "r")
