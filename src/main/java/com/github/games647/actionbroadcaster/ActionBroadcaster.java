@@ -28,7 +28,7 @@ import org.spongepowered.api.plugin.Plugin;
 import org.spongepowered.api.plugin.PluginContainer;
 import org.spongepowered.api.text.Texts;
 
-@Plugin(id = "actionbroadcaster", name = "ActionBroadcaster", version = "0.1.7")
+@Plugin(id = "actionbroadcaster", name = "ActionBroadcaster", version = "0.1.9")
 public class ActionBroadcaster {
 
     private final PluginContainer pluginContainer;
@@ -63,7 +63,7 @@ public class ActionBroadcaster {
     @Listener //During this state, the plugin should finish any work needed in order to be functional. Commands register + events
     public void onInit(GameInitializationEvent initEvent) {
         //register commands
-        CommandManager commandDispatcher = initEvent.getGame().getCommandManager();
+        CommandManager commandDispatcher = game.getCommandManager();
         CommandSpec mainCommands = CommandSpec.builder()
                 .executor(new VersionCommand(this))
                 .child(new ReloadCommand(this), "reload", "r")
