@@ -14,7 +14,6 @@ import org.spongepowered.api.command.CommandSource;
 import org.spongepowered.api.service.pagination.PaginationBuilder;
 import org.spongepowered.api.service.pagination.PaginationService;
 import org.spongepowered.api.text.Text;
-import org.spongepowered.api.text.Texts;
 import org.spongepowered.api.text.action.TextActions;
 import org.spongepowered.api.text.format.TextColors;
 import org.spongepowered.api.text.format.TextStyles;
@@ -38,17 +37,17 @@ public class ListCommand implements CommandCallable {
         }
 
         if (contents.isEmpty()) {
-            source.sendMessage(Texts.of(TextColors.RED, "There are no messages"));
+            source.sendMessage(Text.of(TextColors.RED, "There are no messages"));
             return CommandResult.success();
         }
 
 
         PaginationService paginationService = plugin.getGame().getServiceManager().provide(PaginationService.class).get();
         PaginationBuilder builder = paginationService.builder();
-        builder.title(Texts
+        builder.title(Text
                 .builder()
                 .color(TextColors.DARK_BLUE)
-                .append(Texts
+                .append(Text
                         .builder("Messages")
                         .color(TextColors.YELLOW)
                         .build())
@@ -72,34 +71,34 @@ public class ListCommand implements CommandCallable {
 
     @Override
     public Optional<? extends Text> getShortDescription(CommandSource source) {
-        return Optional.of(Texts.of(TextColors.RED, TextStyles.NONE, "Lists all messages"));
+        return Optional.of(Text.of(TextColors.RED, TextStyles.NONE, "Lists all messages"));
     }
 
     @Override
     public Optional<? extends Text> getHelp(CommandSource source) {
-        return Optional.of(Texts.of(TextColors.RED, TextStyles.NONE, "Lists all messages"));
+        return Optional.of(Text.of(TextColors.RED, TextStyles.NONE, "Lists all messages"));
     }
 
     @Override
     public Text getUsage(CommandSource source) {
-        return Texts.of();
+        return Text.of();
     }
 
     private Text buildMessage(int index, String text) {
-        String lineText = plugin.translateColorCodes(text);
+        String lineText = text;
         if (lineText.length() > 32) {
             lineText = lineText.substring(0, 32) + "...";
         }
 
-        return Texts.builder(lineText)
-                .onHover(TextActions.showText(Texts.of(text)))
+        return Text.builder(plugin.translateColorCodes(lineText))
+                .onHover(TextActions.showText(Text.of(text)))
                 //do not add colors to the text message in order to show the actual results
-                .append(Texts
+                .append(Text
                         .builder(" ✖")
                         .color(TextColors.DARK_RED)
                         .onClick(TextActions.runCommand('/' + plugin.getContainer().getId() + " remove " + (index + 1)))
                         .onHover(TextActions
-                                .showText(Texts.of(TextColors.RED, TextStyles.ITALIC, "Removes this message")))
+                                .showText(Text.of(TextColors.RED, TextStyles.ITALIC, "Removes this message")))
                         .build())
                 .build();
     }

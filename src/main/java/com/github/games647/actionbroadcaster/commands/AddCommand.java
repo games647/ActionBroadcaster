@@ -11,7 +11,6 @@ import org.spongepowered.api.command.CommandException;
 import org.spongepowered.api.command.CommandResult;
 import org.spongepowered.api.command.CommandSource;
 import org.spongepowered.api.text.Text;
-import org.spongepowered.api.text.Texts;
 import org.spongepowered.api.text.format.TextColors;
 import org.spongepowered.api.text.format.TextStyles;
 
@@ -29,8 +28,8 @@ public class AddCommand implements CommandCallable {
         messages.add(arg);
 
         plugin.getConfigManager().save();
-        source.sendMessage(Texts.of(TextColors.DARK_GREEN, "Added following message: "));
-        source.sendMessage(Texts.of(arg));
+        source.sendMessage(Text.of(TextColors.DARK_GREEN, "Added following message: "));
+        source.sendMessage(Text.of(arg));
 
         return CommandResult.builder().successCount(1).build();
     }
@@ -47,16 +46,16 @@ public class AddCommand implements CommandCallable {
 
     @Override
     public Optional<? extends Text> getShortDescription(CommandSource source) {
-        return Optional.of(Texts.of(TextColors.RED, TextStyles.NONE, "Adds a new message"));
+        return Optional.of(Text.of(TextColors.RED, TextStyles.NONE, "Adds a new message"));
     }
 
     @Override
     public Optional<? extends Text> getHelp(CommandSource source) {
-        return Optional.of(Texts.of(TextColors.RED, TextStyles.NONE, "Adds a new message"));
+        return Optional.of(Text.of(TextColors.RED, TextStyles.NONE, "Adds a new message"));
     }
 
     @Override
     public Text getUsage(CommandSource source) {
-        return Texts.of();
+        return Text.of();
     }
 }

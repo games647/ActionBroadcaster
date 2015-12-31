@@ -14,7 +14,6 @@ import org.spongepowered.api.command.CommandResult;
 import org.spongepowered.api.command.CommandSource;
 import org.spongepowered.api.scheduler.Task;
 import org.spongepowered.api.text.Text;
-import org.spongepowered.api.text.Texts;
 import org.spongepowered.api.text.format.TextColors;
 import org.spongepowered.api.text.format.TextStyles;
 
@@ -43,7 +42,7 @@ public class ReloadCommand implements CommandCallable {
                     .submit(plugin);
         }
 
-        source.sendMessage(Texts.builder("Reloaded the plugin").color(TextColors.DARK_RED).build());
+        source.sendMessage(Text.builder("Reloaded the plugin").color(TextColors.DARK_RED).build());
         return CommandResult.success();
     }
 
@@ -59,16 +58,16 @@ public class ReloadCommand implements CommandCallable {
 
     @Override
     public Optional<? extends Text> getShortDescription(CommandSource source) {
-        return Optional.of(Texts.of(TextColors.RED, TextStyles.NONE, "Reloads the entire plugin"));
+        return Optional.of(Text.of(TextColors.RED, TextStyles.NONE, "Reloads the entire plugin"));
     }
 
     @Override
     public Optional<? extends Text> getHelp(CommandSource source) {
-        return Optional.of(Texts.of(TextColors.RED, TextStyles.NONE, "Reloads the entire plugin"));
+        return Optional.of(Text.of(TextColors.RED, TextStyles.NONE, "Reloads the entire plugin"));
     }
 
     @Override
     public Text getUsage(CommandSource source) {
-        return Texts.of();
+        return Text.of();
     }
 }

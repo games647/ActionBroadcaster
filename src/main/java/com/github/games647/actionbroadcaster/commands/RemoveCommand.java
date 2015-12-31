@@ -12,7 +12,6 @@ import org.spongepowered.api.command.CommandException;
 import org.spongepowered.api.command.CommandResult;
 import org.spongepowered.api.command.CommandSource;
 import org.spongepowered.api.text.Text;
-import org.spongepowered.api.text.Texts;
 import org.spongepowered.api.text.format.TextColors;
 import org.spongepowered.api.text.format.TextStyles;
 
@@ -31,21 +30,21 @@ public class RemoveCommand implements CommandCallable {
             String index = args[0];
             Integer indexParsed = Ints.tryParse(index);
             if (indexParsed == null) {
-                source.sendMessage(Texts.of(TextColors.DARK_RED, index + " is not a index number"));
+                source.sendMessage(Text.of(TextColors.DARK_RED, index + " is not a index number"));
             } else {
                 int intValue = indexParsed;
 
                 List<String> messages = plugin.getConfigManager().getConfiguration().getMessages();
                 if (indexParsed > messages.size()) {
-                    source.sendMessage(Texts.of(TextColors.DARK_RED
+                    source.sendMessage(Text.of(TextColors.DARK_RED
                             , index + '/' + messages.size()
                                   + " Number is higher than the available messages"));
                 } else {
                     String removedMessage = messages.remove(intValue - 1);
                     plugin.getConfigManager().save();
 
-                    source.sendMessage(Texts.of(TextColors.DARK_GREEN, "Removed the following message"));
-                    source.sendMessage(Texts.of(removedMessage));
+                    source.sendMessage(Text.of(TextColors.DARK_GREEN, "Removed the following message"));
+                    source.sendMessage(Text.of(removedMessage));
                     return CommandResult.builder().successCount(1).build();
                 }
             }
@@ -73,7 +72,7 @@ public class RemoveCommand implements CommandCallable {
 
     @Override
     public Optional<? extends Text> getShortDescription(CommandSource source) {
-        return Optional.of(Texts.of(TextColors.RED, TextStyles.NONE, "Reloads the entire plugin"));
+        return Optional.of(Text.of(TextColors.RED, TextStyles.NONE, "Reloads the entire plugin"));
     }
 
     @Override
@@ -83,6 +82,6 @@ public class RemoveCommand implements CommandCallable {
 
     @Override
     public Text getUsage(CommandSource source) {
-        return Texts.of();
+        return Text.of();
     }
 }

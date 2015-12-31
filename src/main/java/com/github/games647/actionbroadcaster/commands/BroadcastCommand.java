@@ -13,7 +13,6 @@ import org.spongepowered.api.command.CommandResult;
 import org.spongepowered.api.command.CommandSource;
 import org.spongepowered.api.entity.living.player.Player;
 import org.spongepowered.api.text.Text;
-import org.spongepowered.api.text.Texts;
 import org.spongepowered.api.text.chat.ChatTypes;
 import org.spongepowered.api.text.format.TextColors;
 import org.spongepowered.api.text.format.TextStyles;
@@ -35,27 +34,27 @@ public class BroadcastCommand implements CommandCallable {
                 int index = firstArg;
                 List<String> messages = plugin.getConfigManager().getConfiguration().getMessages();
                 if (index > messages.size()) {
-                    source.sendMessage(Texts.of(TextColors.DARK_RED, index + "/" + messages.size()
+                    source.sendMessage(Text.of(TextColors.DARK_RED, index + "/" + messages.size()
                             + " Number is higher than the available messages"));
                     return CommandResult.empty();
                 }
 
                 String message = messages.get(index - 1);
                 for (Player onlinePlayer : plugin.getGame().getServer().getOnlinePlayers()) {
-                    onlinePlayer.sendMessage(ChatTypes.ACTION_BAR, Texts.of(plugin.translateColorCodes(message)));
+                    onlinePlayer.sendMessage(ChatTypes.ACTION_BAR, Text.of(plugin.translateColorCodes(message)));
                 }
 
-                source.sendMessage(Texts.of(TextColors.DARK_GREEN, "Broadcasted message: "));
-                source.sendMessage(Texts.of(message));
+                source.sendMessage(Text.of(TextColors.DARK_GREEN, "Broadcasted message: "));
+                source.sendMessage(Text.of(message));
                 return CommandResult.success();
             }
         }
 
         for (Player onlinePlayer : plugin.getGame().getServer().getOnlinePlayers()) {
-            onlinePlayer.sendMessage(ChatTypes.ACTION_BAR, Texts.of(plugin.translateColorCodes(arg)));
+            onlinePlayer.sendMessage(ChatTypes.ACTION_BAR, Text.of(plugin.translateColorCodes(arg)));
         }
 
-        source.sendMessage(Texts.of(TextColors.DARK_GREEN, "Broadcasted message"));
+        source.sendMessage(Text.of(TextColors.DARK_GREEN, "Broadcasted message"));
         return CommandResult
                 .builder()
                 .affectedEntities(plugin.getGame().getServer().getOnlinePlayers().size())
@@ -74,16 +73,16 @@ public class BroadcastCommand implements CommandCallable {
 
     @Override
     public Optional<? extends Text> getShortDescription(CommandSource source) {
-        return Optional.of(Texts.of(TextColors.RED, TextStyles.NONE, "Broadcasts a predefined or new message"));
+        return Optional.of(Text.of(TextColors.RED, TextStyles.NONE, "Broadcasts a predefined or new message"));
     }
 
     @Override
     public Optional<? extends Text> getHelp(CommandSource source) {
-        return Optional.of(Texts.of(TextColors.RED, TextStyles.NONE, "Broadcasts a predefined or new message"));
+        return Optional.of(Text.of(TextColors.RED, TextStyles.NONE, "Broadcasts a predefined or new message"));
     }
 
     @Override
     public Text getUsage(CommandSource source) {
-        return Texts.of();
+        return Text.of();
     }
 }

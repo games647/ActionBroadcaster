@@ -4,7 +4,7 @@ import java.util.List;
 import java.util.Random;
 
 import org.spongepowered.api.entity.living.player.Player;
-import org.spongepowered.api.text.Texts;
+import org.spongepowered.api.text.Text;
 import org.spongepowered.api.text.chat.ChatTypes;
 
 public class BroadcastTask implements Runnable {
@@ -36,7 +36,7 @@ public class BroadcastTask implements Runnable {
         //you cannot send action messages with message sink
         for (Player player : plugin.getGame().getServer().getOnlinePlayers()) {
             if (player.hasPermission(plugin.getContainer().getId() + ".receive")) {
-                player.sendMessage(ChatTypes.ACTION_BAR, Texts.of(message));
+                player.sendMessage(ChatTypes.ACTION_BAR, Text.of(message));
             }
         }
     }
