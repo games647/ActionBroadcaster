@@ -86,7 +86,7 @@ public class ListCommand implements CommandCallable {
     }
 
     private Text buildMessage(int index, String text) {
-        String lineText = text;
+        String lineText = plugin.translateColorCodes(text);
         if (lineText.length() > 32) {
             lineText = lineText.substring(0, 32) + "...";
         }

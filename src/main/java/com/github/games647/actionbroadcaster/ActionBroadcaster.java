@@ -3,7 +3,6 @@ package com.github.games647.actionbroadcaster;
 import com.github.games647.actionbroadcaster.commands.ListCommand;
 import com.github.games647.actionbroadcaster.commands.AddCommand;
 import com.github.games647.actionbroadcaster.commands.BroadcastCommand;
-import com.github.games647.actionbroadcaster.commands.VersionCommand;
 import com.github.games647.actionbroadcaster.config.Settings;
 import com.github.games647.actionbroadcaster.commands.ReloadCommand;
 import com.github.games647.actionbroadcaster.commands.RemoveCommand;
@@ -65,7 +64,6 @@ public class ActionBroadcaster {
         //register commands
         CommandManager commandDispatcher = game.getCommandManager();
         CommandSpec mainCommands = CommandSpec.builder()
-                .executor(new VersionCommand(this))
                 .child(new ReloadCommand(this), "reload", "r")
                 .child(new ListCommand(this), "list", "ls")
                 .child(new AddCommand(this), "add")

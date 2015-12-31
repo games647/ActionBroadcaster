@@ -18,8 +18,8 @@ public class Config {
     private boolean random = true;
 
     @Setting(value = "messages"
-            , comment = "All messages which will be displayed. Use § as color char for colored messages")
-    private List<String> messages = Lists.newArrayList("§aExample Message");
+            , comment = "All messages which will be displayed. Use & as color char for colored messages")
+    private List<String> messages = Lists.newArrayList("&aExample Message");
 
     public boolean isEnabled() {
         return enabled;

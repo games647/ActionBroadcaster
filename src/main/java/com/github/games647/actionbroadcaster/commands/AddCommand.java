@@ -26,12 +26,11 @@ public class AddCommand implements CommandCallable {
     @Override
     public CommandResult process(CommandSource source, String arg) throws CommandException {
         List<String> messages = plugin.getConfigManager().getConfiguration().getMessages();
-        String translatedText = plugin.translateColorCodes(arg);
-        messages.add(translatedText);
+        messages.add(arg);
 
         plugin.getConfigManager().save();
         source.sendMessage(Texts.of(TextColors.DARK_GREEN, "Added following message: "));
-        source.sendMessage(Texts.of(translatedText));
+        source.sendMessage(Texts.of(arg));
 
         return CommandResult.builder().successCount(1).build();
     }
