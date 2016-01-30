@@ -5,7 +5,6 @@ import com.github.games647.actionbroadcaster.ActionBroadcaster;
 import java.io.File;
 import java.io.IOException;
 
-import ninja.leaping.configurate.ConfigurationOptions;
 import ninja.leaping.configurate.commented.CommentedConfigurationNode;
 import ninja.leaping.configurate.loader.ConfigurationLoader;
 import ninja.leaping.configurate.objectmapping.ObjectMapper;
@@ -38,14 +37,13 @@ public class Settings {
         if (!defaultConfigFile.exists()) {
             try {
                 defaultConfigFile.createNewFile();
-                rootNode = configManager.createEmptyNode(ConfigurationOptions.defaults());
             } catch (IOException ioExc) {
                 plugin.getLogger().error("Error creating a new config file", ioExc);
                 return;
             }
         }
 
-        rootNode = configManager.createEmptyNode(ConfigurationOptions.defaults());
+        rootNode = configManager.createEmptyNode();
         if (configMapper != null) {
             try {
                 rootNode = configManager.load();

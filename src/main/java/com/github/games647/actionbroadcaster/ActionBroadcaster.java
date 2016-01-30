@@ -25,6 +25,8 @@ import org.spongepowered.api.event.game.state.GameInitializationEvent;
 import org.spongepowered.api.event.game.state.GamePreInitializationEvent;
 import org.spongepowered.api.plugin.Plugin;
 import org.spongepowered.api.plugin.PluginContainer;
+import org.spongepowered.api.text.Text;
+import org.spongepowered.api.text.serializer.FormattingCodeTextSerializer;
 import org.spongepowered.api.text.serializer.TextSerializers;
 
 @Plugin(id = "actionbroadcaster", name = "ActionBroadcaster", version = "0.1.9")
@@ -85,8 +87,9 @@ public class ActionBroadcaster {
         }
     }
 
-    public String translateColorCodes(String rawInput) {
-        return TextSerializers.LEGACY_FORMATTING_CODE.replaceCodes(rawInput, '&');
+    public Text translateColorCodes(String rawInput) {
+        FormattingCodeTextSerializer legacy = TextSerializers.formattingCode('&');
+        return legacy.deserialize(rawInput);
     }
 
     public Settings getConfigManager() {

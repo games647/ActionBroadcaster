@@ -40,11 +40,11 @@ public class RemoveCommand implements CommandCallable {
                             , index + '/' + messages.size()
                                   + " Number is higher than the available messages"));
                 } else {
-                    String removedMessage = messages.remove(intValue - 1);
+                    Text removedMessage = plugin.translateColorCodes(messages.remove(intValue - 1));
                     plugin.getConfigManager().save();
 
                     source.sendMessage(Text.of(TextColors.DARK_GREEN, "Removed the following message"));
-                    source.sendMessage(Text.of(removedMessage));
+                    source.sendMessage(removedMessage);
                     return CommandResult.builder().successCount(1).build();
                 }
             }

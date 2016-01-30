@@ -90,7 +90,7 @@ public class ListCommand implements CommandCallable {
             lineText = lineText.substring(0, 32) + "...";
         }
 
-        return Text.builder(plugin.translateColorCodes(lineText))
+        return Text.builder(plugin.translateColorCodes(lineText), "")
                 .onHover(TextActions.showText(Text.of(text)))
                 //do not add colors to the text message in order to show the actual results
                 .append(Text

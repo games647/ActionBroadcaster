@@ -19,7 +19,9 @@ public class BroadcastTask implements Runnable {
 
     @Override
     public void run() {
+        System.out.println("RUN");
         List<String> messages = plugin.getConfigManager().getConfiguration().getMessages();
+        System.out.println(messages);
         if (messages.isEmpty()) {
             return;
         }
@@ -32,11 +34,11 @@ public class BroadcastTask implements Runnable {
             currentIndex = 0;
         }
 
-        String message = messages.get(currentIndex);
+        Text message = plugin.translateColorCodes(messages.get(currentIndex));
         //you cannot send action messages with message sink
         for (Player player : plugin.getGame().getServer().getOnlinePlayers()) {
             if (player.hasPermission(plugin.getContainer().getId() + ".receive")) {
-                player.sendMessage(ChatTypes.ACTION_BAR, Text.of(message));
+                player.sendMessage(ChatTypes.ACTION_BAR, message);
             }
         }
     }

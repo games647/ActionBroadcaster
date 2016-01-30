@@ -29,7 +29,7 @@ public class AddCommand implements CommandCallable {
 
         plugin.getConfigManager().save();
         source.sendMessage(Text.of(TextColors.DARK_GREEN, "Added following message: "));
-        source.sendMessage(Text.of(arg));
+        source.sendMessage(plugin.translateColorCodes(arg));
 
         return CommandResult.builder().successCount(1).build();
     }
