@@ -19,9 +19,7 @@ public class BroadcastTask implements Runnable {
 
     @Override
     public void run() {
-        System.out.println("RUN");
         List<String> messages = plugin.getConfigManager().getConfiguration().getMessages();
-        System.out.println(messages);
         if (messages.isEmpty()) {
             return;
         }

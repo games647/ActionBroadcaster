@@ -5,9 +5,7 @@ language: java
 
 script: mvn compile test
 
-# So many servers still have Java 6. So test if the code is Java 6 compatible.
-# http://mcstats.org/global/#Java+Version
-jdk: [openjdk6]
+jdk: [openjdk8]
 
 # if one build failed, exit testing
 matrix:
