@@ -8,18 +8,21 @@ import ninja.leaping.configurate.objectmapping.Setting;
 
 public class Config {
 
-    @Setting(value = "enabled", comment = "Disable the entire broadcast functionality")
+    @Setting(comment = "Disable the entire broadcast functionality")
     private boolean enabled = true;
 
-    @Setting(value = "interval", comment = "Interval in seconds to wait for the next message")
+    @Setting(comment = "Interval in seconds to wait for the next message")
     private int interval = 320;
 
-    @Setting(value = "random", comment = "Should the message be selected for displaying in random order")
+    @Setting(comment = "Should the message be selected for displaying in random order")
     private boolean random = true;
 
-    @Setting(value = "messages"
-            , comment = "All messages which will be displayed. Use & as color char for colored messages")
+    @Setting(comment = "All messages which will be displayed. Use & as color char for colored messages")
     private List<String> messages = Lists.newArrayList("&aExample Message");
+
+    @Setting(comment = "How long should the message be displayed in seconds. "
+            + "This value have to be higher than 2 (Minecraft Default)")
+    private int appearanceTime = 2;
 
     public boolean isEnabled() {
         return enabled;
@@ -35,5 +38,9 @@ public class Config {
 
     public List<String> getMessages() {
         return messages;
+    }
+
+    public int getAppearanceTime() {
+        return appearanceTime;
     }
 }

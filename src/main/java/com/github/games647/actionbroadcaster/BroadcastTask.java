@@ -3,9 +3,7 @@ package com.github.games647.actionbroadcaster;
 import java.util.List;
 import java.util.Random;
 
-import org.spongepowered.api.entity.living.player.Player;
 import org.spongepowered.api.text.Text;
-import org.spongepowered.api.text.chat.ChatTypes;
 
 public class BroadcastTask implements Runnable {
 
@@ -33,11 +31,6 @@ public class BroadcastTask implements Runnable {
         }
 
         Text message = plugin.translateColorCodes(messages.get(currentIndex));
-        //you cannot send action messages with message sink
-        for (Player player : plugin.getGame().getServer().getOnlinePlayers()) {
-            if (player.hasPermission(plugin.getContainer().getId() + ".receive")) {
-                player.sendMessage(ChatTypes.ACTION_BAR, message);
-            }
-        }
+        plugin.broadcast(message, true);
     }
 }

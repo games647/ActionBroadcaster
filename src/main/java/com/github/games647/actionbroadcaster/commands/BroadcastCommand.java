@@ -40,9 +40,7 @@ public class BroadcastCommand implements CommandCallable {
                 }
 
                 String message = messages.get(index - 1);
-                for (Player onlinePlayer : plugin.getGame().getServer().getOnlinePlayers()) {
-                    onlinePlayer.sendMessage(ChatTypes.ACTION_BAR, plugin.translateColorCodes(message));
-                }
+                plugin.broadcast(plugin.translateColorCodes(arg), true);
 
                 source.sendMessage(Text.of(TextColors.DARK_GREEN, "Broadcasted message: "));
                 source.sendMessage(Text.of(message));
