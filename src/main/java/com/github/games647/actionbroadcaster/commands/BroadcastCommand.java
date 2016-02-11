@@ -11,9 +11,7 @@ import org.spongepowered.api.command.CommandCallable;
 import org.spongepowered.api.command.CommandException;
 import org.spongepowered.api.command.CommandResult;
 import org.spongepowered.api.command.CommandSource;
-import org.spongepowered.api.entity.living.player.Player;
 import org.spongepowered.api.text.Text;
-import org.spongepowered.api.text.chat.ChatTypes;
 import org.spongepowered.api.text.format.TextColors;
 import org.spongepowered.api.text.format.TextStyles;
 
@@ -40,7 +38,8 @@ public class BroadcastCommand implements CommandCallable {
                 }
 
                 String message = messages.get(index - 1);
-                plugin.broadcast(plugin.translateColorCodes(arg), true);
+                Text coloredMessage = plugin.translateColorCodes(message);
+                plugin.broadcast(coloredMessage, true, plugin.getGame().getServer().getOnlinePlayers());
 
                 source.sendMessage(Text.of(TextColors.DARK_GREEN, "Broadcasted message: "));
                 source.sendMessage(Text.of(message));
@@ -48,9 +47,8 @@ public class BroadcastCommand implements CommandCallable {
             }
         }
 
-        for (Player onlinePlayer : plugin.getGame().getServer().getOnlinePlayers()) {
-            onlinePlayer.sendMessage(ChatTypes.ACTION_BAR, plugin.translateColorCodes(arg));
-        }
+        Text coloredMessage = plugin.translateColorCodes(arg);
+        plugin.broadcast(coloredMessage, true, plugin.getGame().getServer().getOnlinePlayers());
 
         source.sendMessage(Text.of(TextColors.DARK_GREEN, "Broadcasted message"));
         return CommandResult
