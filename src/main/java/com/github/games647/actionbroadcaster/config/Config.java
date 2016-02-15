@@ -17,6 +17,12 @@ public class Config {
     @Setting(comment = "Should the message be selected for displaying in random order")
     private boolean random = true;
 
+    @Setting(comment = "Specify the minimum number of players for messages to be broadcasted on the server.")
+    private int minPlayers = 1;
+
+    @Setting(comment = "Message that will be displayed on join. Set this to an empty text in order to disable it")
+    private String welcomeMessage = "";
+
     @Setting(comment = "All messages which will be displayed. Use & as color char for colored messages")
     private List<String> messages = Lists.newArrayList("&aExample Message");
 
@@ -34,6 +40,14 @@ public class Config {
 
     public boolean isRandom() {
         return random;
+    }
+
+    public int getMinPlayers() {
+        return minPlayers;
+    }
+
+    public String getWelcomeMessage() {
+        return welcomeMessage;
     }
 
     public List<String> getMessages() {

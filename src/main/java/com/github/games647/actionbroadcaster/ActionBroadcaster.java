@@ -9,8 +9,11 @@ import com.github.games647.actionbroadcaster.commands.RemoveCommand;
 import com.google.inject.Inject;
 
 import java.io.File;
+import java.util.Collection;
 import java.util.concurrent.TimeUnit;
 import java.util.function.Consumer;
+
+import me.flibio.updatifier.Updatifier;
 
 import ninja.leaping.configurate.commented.CommentedConfigurationNode;
 import ninja.leaping.configurate.loader.ConfigurationLoader;
@@ -33,7 +36,8 @@ import org.spongepowered.api.text.chat.ChatTypes;
 import org.spongepowered.api.text.serializer.FormattingCodeTextSerializer;
 import org.spongepowered.api.text.serializer.TextSerializers;
 
-@Plugin(id = "actionbroadcaster", name = "ActionBroadcaster", version = "0.3")
+@Updatifier(repoOwner = "games647", repoName = "ActionBroadcaster", version = "0.4")
+@Plugin(id = "actionbroadcaster", name = "ActionBroadcaster", version = "0.4")
 public class ActionBroadcaster {
 
     //disappear time from an action message in seconds which is default in minecraft
@@ -78,6 +82,9 @@ public class ActionBroadcaster {
                 .child(new BroadcastCommand(this), "broadcast", "announce")
                 .build();
         commandDispatcher.register(this, mainCommands, pluginContainer.getId(), "ab");
+
+        //register events
+        game.getEventManager().registerListeners(this, new WelcomeListener(this));
     }
 
     @Listener
@@ -92,10 +99,10 @@ public class ActionBroadcaster {
         }
     }
 
-    public void broadcast(Text message, boolean schedule) {
+    public void broadcast(Text message, boolean schedule, Collection<Player> receivers) {
         int remainingAppear = configuration.getConfiguration().getAppearanceTime() - DISAPPEAR_TIME;
 
-        if (sendMessageToAll(message) && schedule
+        if (sendMessageToAll(message, receivers) && schedule
                 && remainingAppear > 0 && remainingAppear < configuration.getConfiguration().getInterval()) {
             game.getScheduler().createTaskBuilder()
                     .delay(remainingAppear % DISAPPEAR_TIME, TimeUnit.SECONDS)
@@ -106,7 +113,7 @@ public class ActionBroadcaster {
 
                         @Override
                         public void accept(Task task) {
-                            if (!sendMessageToAll(message) || --remainingExecutions <= 0) {
+                            if (!sendMessageToAll(message, receivers) || --remainingExecutions <= 0) {
                                 task.cancel();
                             }
                         }
@@ -119,9 +126,9 @@ public class ActionBroadcaster {
         return legacy.deserialize(rawInput);
     }
 
-    public boolean sendMessageToAll(Text message) {
+    public boolean sendMessageToAll(Text message, Collection<Player> receivers) {
         boolean sent = false;
-        for (Player player : game.getServer().getOnlinePlayers()) {
+        for (Player player : receivers) {
             //you cannot send action messages with message sink
             if (player.hasPermission(pluginContainer.getId() + ".receive")) {
                 player.sendMessage(ChatTypes.ACTION_BAR, message);

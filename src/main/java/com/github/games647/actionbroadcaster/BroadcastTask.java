@@ -1,5 +1,7 @@
 package com.github.games647.actionbroadcaster;
 
+import com.github.games647.actionbroadcaster.config.Config;
+
 import java.util.List;
 import java.util.Random;
 
@@ -17,13 +19,15 @@ public class BroadcastTask implements Runnable {
 
     @Override
     public void run() {
-        List<String> messages = plugin.getConfigManager().getConfiguration().getMessages();
-        if (messages.isEmpty()) {
+        Config config = plugin.getConfigManager().getConfiguration();
+        List<String> messages = config.getMessages();
+        int minPlayers = config.getMinPlayers();
+        if (messages.isEmpty() || minPlayers > plugin.getGame().getServer().getOnlinePlayers().size()) {
             return;
         }
 
         currentIndex++;
-        if (plugin.getConfigManager().getConfiguration().isRandom()) {
+        if (config.isRandom()) {
             currentIndex = new Random().nextInt(messages.size());
         } else if (currentIndex >= messages.size()) {
             //we reached the end
@@ -31,6 +35,6 @@ public class BroadcastTask implements Runnable {
         }
 
         Text message = plugin.translateColorCodes(messages.get(currentIndex));
-        plugin.broadcast(message, true);
+        plugin.broadcast(message, true, plugin.getGame().getServer().getOnlinePlayers());
     }
 }
