@@ -11,7 +11,7 @@ import org.spongepowered.api.command.CommandCallable;
 import org.spongepowered.api.command.CommandException;
 import org.spongepowered.api.command.CommandResult;
 import org.spongepowered.api.command.CommandSource;
-import org.spongepowered.api.service.pagination.PaginationBuilder;
+import org.spongepowered.api.service.pagination.PaginationList.Builder;
 import org.spongepowered.api.service.pagination.PaginationService;
 import org.spongepowered.api.text.Text;
 import org.spongepowered.api.text.action.TextActions;
@@ -42,8 +42,8 @@ public class ListCommand implements CommandCallable {
         }
 
 
-        PaginationService paginationService = plugin.getGame().getServiceManager().provide(PaginationService.class).get();
-        PaginationBuilder builder = paginationService.builder();
+        PaginationService paginationService = plugin.getGame().getServiceManager().provideUnchecked(PaginationService.class);
+        Builder builder = paginationService.builder();
         builder.title(Text
                 .builder()
                 .color(TextColors.DARK_BLUE)
@@ -52,7 +52,7 @@ public class ListCommand implements CommandCallable {
                         .color(TextColors.YELLOW)
                         .build())
                 .build())
-                .paddingString("=")
+                .padding(Text.of("="))
                 .contents(contents)
                 .sendTo(source);
 
