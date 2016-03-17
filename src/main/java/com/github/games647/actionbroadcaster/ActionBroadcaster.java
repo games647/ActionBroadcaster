@@ -33,11 +33,13 @@ import org.spongepowered.api.plugin.PluginContainer;
 import org.spongepowered.api.scheduler.Task;
 import org.spongepowered.api.text.Text;
 import org.spongepowered.api.text.chat.ChatTypes;
-import org.spongepowered.api.text.serializer.FormattingCodeTextSerializer;
 import org.spongepowered.api.text.serializer.TextSerializers;
 
-@Updatifier(repoOwner = "games647", repoName = "ActionBroadcaster", version = "0.4")
-@Plugin(id = "actionbroadcaster", name = "ActionBroadcaster", version = "0.4")
+@Updatifier(repoOwner = "games647", repoName = "ActionBroadcaster", version = "0.4.1")
+@Plugin(id = "com.github.games647.actionbroadcaster", name = "ActionBroadcaster", version = "0.4.1"
+        , url = "https://github.com/games647/ActionBroadcaster"
+        , description = "A Sponge minecraft server plugin to create automated messages "
+                + "that will be printed into the action chat slot.")
 public class ActionBroadcaster {
 
     //disappear time from an action message in seconds which is default in minecraft
@@ -122,8 +124,7 @@ public class ActionBroadcaster {
     }
 
     public Text translateColorCodes(String rawInput) {
-        FormattingCodeTextSerializer legacy = TextSerializers.formattingCode('&');
-        return legacy.deserialize(rawInput);
+        return TextSerializers.FORMATTING_CODE.deserialize(rawInput);
     }
 
     public boolean sendMessageToAll(Text message, Collection<Player> receivers) {
