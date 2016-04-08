@@ -3,21 +3,18 @@ package com.github.games647.actionbroadcaster.commands;
 import com.github.games647.actionbroadcaster.BroadcastTask;
 import com.github.games647.actionbroadcaster.ActionBroadcaster;
 
-import java.util.Collections;
-import java.util.List;
-import java.util.Optional;
 import java.util.concurrent.TimeUnit;
 
-import org.spongepowered.api.command.CommandCallable;
 import org.spongepowered.api.command.CommandException;
 import org.spongepowered.api.command.CommandResult;
 import org.spongepowered.api.command.CommandSource;
+import org.spongepowered.api.command.args.CommandContext;
+import org.spongepowered.api.command.spec.CommandExecutor;
 import org.spongepowered.api.scheduler.Task;
 import org.spongepowered.api.text.Text;
 import org.spongepowered.api.text.format.TextColors;
-import org.spongepowered.api.text.format.TextStyles;
 
-public class ReloadCommand implements CommandCallable {
+public class ReloadCommand implements CommandExecutor {
 
     private final ActionBroadcaster plugin;
 
@@ -26,7 +23,7 @@ public class ReloadCommand implements CommandCallable {
     }
 
     @Override
-    public CommandResult process(CommandSource source, String arg) throws CommandException {
+    public CommandResult execute(CommandSource source, CommandContext args) throws CommandException {
         plugin.getConfigManager().load();
 
         //cancel all tasks and schedule new ones
@@ -44,30 +41,5 @@ public class ReloadCommand implements CommandCallable {
 
         source.sendMessage(Text.builder("Reloaded the plugin").color(TextColors.DARK_RED).build());
         return CommandResult.success();
-    }
-
-    @Override
-    public List<String> getSuggestions(CommandSource source, String arguments) throws CommandException {
-        return Collections.emptyList();
-    }
-
-    @Override
-    public boolean testPermission(CommandSource source) {
-        return source.hasPermission(plugin.getContainer().getId() + ".reload");
-    }
-
-    @Override
-    public Optional<? extends Text> getShortDescription(CommandSource source) {
-        return Optional.of(Text.of(TextColors.RED, TextStyles.NONE, "Reloads the entire plugin"));
-    }
-
-    @Override
-    public Optional<? extends Text> getHelp(CommandSource source) {
-        return Optional.of(Text.of(TextColors.RED, TextStyles.NONE, "Reloads the entire plugin"));
-    }
-
-    @Override
-    public Text getUsage(CommandSource source) {
-        return Text.of();
     }
 }

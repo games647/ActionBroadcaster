@@ -1,21 +1,18 @@
 package com.github.games647.actionbroadcaster.commands;
 
 import com.github.games647.actionbroadcaster.ActionBroadcaster;
-import com.google.common.collect.Lists;
-import com.google.common.primitives.Ints;
 
 import java.util.List;
-import java.util.Optional;
 
-import org.spongepowered.api.command.CommandCallable;
 import org.spongepowered.api.command.CommandException;
 import org.spongepowered.api.command.CommandResult;
 import org.spongepowered.api.command.CommandSource;
+import org.spongepowered.api.command.args.CommandContext;
+import org.spongepowered.api.command.spec.CommandExecutor;
 import org.spongepowered.api.text.Text;
 import org.spongepowered.api.text.format.TextColors;
-import org.spongepowered.api.text.format.TextStyles;
 
-public class RemoveCommand implements CommandCallable {
+public class RemoveCommand implements CommandExecutor {
 
     private final ActionBroadcaster plugin;
 
@@ -24,64 +21,34 @@ public class RemoveCommand implements CommandCallable {
     }
 
     @Override
-    public CommandResult process(CommandSource source, String arg) throws CommandException {
-        String[] args = arg.split(" ");
-        if (args.length >= 1) {
-            String index = args[0];
-            Integer indexParsed = Ints.tryParse(index);
-            if (indexParsed == null) {
-                source.sendMessage(Text.of(TextColors.DARK_RED, index + " is not a index number"));
-            } else {
-                int intValue = indexParsed;
+    public CommandResult execute(CommandSource source, CommandContext args) throws CommandException {
+        int index = args.<Integer>getOne("index").get();
 
-                List<String> messages = plugin.getConfigManager().getConfiguration().getMessages();
-                if (indexParsed > messages.size()) {
-                    source.sendMessage(Text.of(TextColors.DARK_RED
-                            , index + '/' + messages.size()
-                                  + " Number is higher than the available messages"));
-                } else {
-                    Text removedMessage = plugin.translateColorCodes(messages.remove(intValue - 1));
-                    plugin.getConfigManager().save();
+        List<String> messages = plugin.getConfigManager().getConfiguration().getMessages();
+        if (index > messages.size()) {
+            source.sendMessage(Text.of(TextColors.DARK_RED, index + '/' + messages.size()
+                    + " Number is higher than the available messages"));
+        } else {
+            Text removedMessage = plugin.translateColorCodes(messages.remove(index - 1));
+            plugin.getConfigManager().save();
 
-                    source.sendMessage(Text.of(TextColors.DARK_GREEN, "Removed the following message"));
-                    source.sendMessage(removedMessage);
-                    return CommandResult.builder().successCount(1).build();
-                }
-            }
+            source.sendMessage(Text.of(TextColors.DARK_GREEN, "Removed the following message"));
+            source.sendMessage(removedMessage);
+            return CommandResult.builder().successCount(1).build();
         }
 
         return CommandResult.success();
     }
 
-    @Override
-    public List<String> getSuggestions(CommandSource source, String arguments) throws CommandException {
-        List<String> messages = plugin.getConfigManager().getConfiguration().getMessages();
-
-        List<String> suggestions = Lists.newArrayList();
-        for (int i = 1; i <= messages.size(); i++) {
-            suggestions.add(Integer.toString(i));
-        }
-
-        return suggestions;
-    }
-
-    @Override
-    public boolean testPermission(CommandSource source) {
-        return source.hasPermission(plugin.getContainer().getId() + ".remove");
-    }
-
-    @Override
-    public Optional<? extends Text> getShortDescription(CommandSource source) {
-        return Optional.of(Text.of(TextColors.RED, TextStyles.NONE, "Reloads the entire plugin"));
-    }
-
-    @Override
-    public Optional<? extends Text> getHelp(CommandSource source) {
-        return Optional.empty();
-    }
-
-    @Override
-    public Text getUsage(CommandSource source) {
-        return Text.of();
-    }
+//    @Override
+//    public List<String> getSuggestions(CommandSource source, String arguments) throws CommandException {
+//        List<String> messages = plugin.getConfigManager().getConfiguration().getMessages();
+//
+//        List<String> suggestions = Lists.newArrayList();
+//        for (int i = 1; i <= messages.size(); i++) {
+//            suggestions.add(Integer.toString(i));
+//        }
+//
+//        return suggestions;
+//    }
 }

@@ -21,6 +21,7 @@ import ninja.leaping.configurate.loader.ConfigurationLoader;
 import org.slf4j.Logger;
 import org.spongepowered.api.Game;
 import org.spongepowered.api.command.CommandManager;
+import org.spongepowered.api.command.args.GenericArguments;
 import org.spongepowered.api.command.spec.CommandSpec;
 import org.spongepowered.api.config.DefaultConfig;
 import org.spongepowered.api.entity.living.player.Player;
@@ -33,10 +34,11 @@ import org.spongepowered.api.plugin.PluginContainer;
 import org.spongepowered.api.scheduler.Task;
 import org.spongepowered.api.text.Text;
 import org.spongepowered.api.text.chat.ChatTypes;
+import org.spongepowered.api.text.format.TextColors;
 import org.spongepowered.api.text.serializer.TextSerializers;
 
-@Updatifier(repoOwner = "games647", repoName = "ActionBroadcaster", version = "0.4.1")
-@Plugin(id = "com.github.games647.actionbroadcaster", name = "ActionBroadcaster", version = "0.4.1"
+@Updatifier(repoOwner = "games647", repoName = "ActionBroadcaster", version = "0.4.2")
+@Plugin(id = "com.github.games647.actionbroadcaster", name = "ActionBroadcaster", version = "0.4.2"
         , url = "https://github.com/games647/ActionBroadcaster"
         , description = "A Sponge minecraft server plugin to create automated messages "
                 + "that will be printed into the action chat slot.")
@@ -76,14 +78,49 @@ public class ActionBroadcaster {
     public void onInit(GameInitializationEvent initEvent) {
         //register commands
         CommandManager commandDispatcher = game.getCommandManager();
-        CommandSpec mainCommands = CommandSpec.builder()
-                .child(new ReloadCommand(this), "reload", "r")
-                .child(new ListCommand(this), "list", "ls")
-                .child(new AddCommand(this), "add")
-                .child(new RemoveCommand(this), "rem", "remove", "delete")
-                .child(new BroadcastCommand(this), "broadcast", "announce")
+
+        CommandSpec reloadCommand = CommandSpec.builder()
+                .permission(pluginContainer.getUnqualifiedId() + ".reload")
+                .description(Text.of(TextColors.RED, "Reloads the entire plugin"))
+                .executor(new ReloadCommand(this))
                 .build();
-        commandDispatcher.register(this, mainCommands, pluginContainer.getId(), "ab");
+
+        CommandSpec listCommand = CommandSpec.builder()
+                .permission(pluginContainer.getUnqualifiedId() + ".list")
+                .description(Text.of(TextColors.RED, "Lists all messages"))
+                .executor(new ListCommand(this))
+                .build();
+
+        CommandSpec addCommand = CommandSpec.builder()
+                .permission(pluginContainer.getUnqualifiedId() + ".add")
+                .description(Text.of(TextColors.RED, "Adds a new message"))
+                .executor(new AddCommand(this))
+                .arguments(GenericArguments.remainingJoinedStrings(Text.of("message")))
+                .build();
+
+        CommandSpec removeCommand = CommandSpec.builder()
+                .permission(pluginContainer.getUnqualifiedId() + ".remove")
+                .description(Text.of(TextColors.RED, "Removes a message from the queued broadcast list"))
+                .executor(new RemoveCommand(this))
+                .arguments(GenericArguments.integer(Text.of("index")))
+                .build();
+
+        CommandSpec broadcastCommand = CommandSpec.builder()
+                .permission(pluginContainer.getUnqualifiedId() + ".broadcast")
+                .description(Text.of(TextColors.RED, "Broadcasts a predefined or new message"))
+                .executor(new BroadcastCommand(this))
+                .arguments(GenericArguments.firstParsing(
+                        GenericArguments.integer(Text.of("index")),
+                        GenericArguments.remainingJoinedStrings(Text.of("message"))))
+                .build();
+
+        commandDispatcher.register(this, CommandSpec.builder()
+                .child(reloadCommand, "reload")
+                .child(listCommand, "list", "ls")
+                .child(addCommand, "add")
+                .child(removeCommand, "rem", "remove", "delete")
+                .child(broadcastCommand, "broadcast", "announce")
+                .build(), pluginContainer.getUnqualifiedId(), "ab");
 
         //register events
         game.getEventManager().registerListeners(this, new WelcomeListener(this));
@@ -131,7 +168,7 @@ public class ActionBroadcaster {
         boolean sent = false;
         for (Player player : receivers) {
             //you cannot send action messages with message sink
-            if (player.hasPermission(pluginContainer.getId() + ".receive")) {
+            if (player.hasPermission(pluginContainer.getUnqualifiedId() + ".receive")) {
                 player.sendMessage(ChatTypes.ACTION_BAR, message);
                 sent = true;
             }
