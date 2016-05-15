@@ -37,8 +37,8 @@ import org.spongepowered.api.text.chat.ChatTypes;
 import org.spongepowered.api.text.format.TextColors;
 import org.spongepowered.api.text.serializer.TextSerializers;
 
-@Updatifier(repoOwner = "games647", repoName = "ActionBroadcaster", version = "0.4.2")
-@Plugin(id = "com.github.games647.actionbroadcaster", name = "ActionBroadcaster", version = "0.4.2"
+@Updatifier(repoOwner = "games647", repoName = "ActionBroadcaster", version = "0.4.3")
+@Plugin(id = "actionbroadcaster", name = "ActionBroadcaster", version = "0.4.3"
         , url = "https://github.com/games647/ActionBroadcaster"
         , description = "A Sponge minecraft server plugin to create automated messages "
                 + "that will be printed into the action chat slot.")
