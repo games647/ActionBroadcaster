@@ -67,13 +67,13 @@ public class ListCommand implements CommandExecutor {
         return Text.builder(plugin.translateColorCodes(lineText), "")
                 .onHover(TextActions.showText(Text.of(text)))
                 .onClick(TextActions
-                        .runCommand('/' + plugin.getContainer().getUnqualifiedId() + " broadcast " + (index + 1)))
+                        .runCommand('/' + plugin.getContainer().getId() + " broadcast " + (index + 1)))
                 //do not add colors to the text message in order to show the actual results
                 .append(Text
                         .builder(" ✖")
                         .color(TextColors.DARK_RED)
                         .onClick(TextActions
-                                .runCommand('/' + plugin.getContainer().getUnqualifiedId() + " remove " + (index + 1)))
+                                .runCommand('/' + plugin.getContainer().getId() + " remove " + (index + 1)))
                         .onHover(TextActions
                                 .showText(Text.of(TextColors.RED, TextStyles.ITALIC, "Removes this message")))
                         .build())

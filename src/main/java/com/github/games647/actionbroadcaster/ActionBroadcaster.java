@@ -37,8 +37,8 @@ import org.spongepowered.api.text.chat.ChatTypes;
 import org.spongepowered.api.text.format.TextColors;
 import org.spongepowered.api.text.serializer.TextSerializers;
 
-@Updatifier(repoOwner = "games647", repoName = "ActionBroadcaster", version = "0.4.3")
-@Plugin(id = "actionbroadcaster", name = "ActionBroadcaster", version = "0.4.3"
+@Updatifier(repoOwner = "games647", repoName = "ActionBroadcaster", version = "0.4.4")
+@Plugin(id = "actionbroadcaster", name = "ActionBroadcaster", version = "0.4.4"
         , url = "https://github.com/games647/ActionBroadcaster"
         , description = "A Sponge minecraft server plugin to create automated messages "
                 + "that will be printed into the action chat slot.")
@@ -80,33 +80,33 @@ public class ActionBroadcaster {
         CommandManager commandDispatcher = game.getCommandManager();
 
         CommandSpec reloadCommand = CommandSpec.builder()
-                .permission(pluginContainer.getUnqualifiedId() + ".reload")
+                .permission(pluginContainer.getId() + ".reload")
                 .description(Text.of(TextColors.RED, "Reloads the entire plugin"))
                 .executor(new ReloadCommand(this))
                 .build();
 
         CommandSpec listCommand = CommandSpec.builder()
-                .permission(pluginContainer.getUnqualifiedId() + ".list")
+                .permission(pluginContainer.getId()+ ".list")
                 .description(Text.of(TextColors.RED, "Lists all messages"))
                 .executor(new ListCommand(this))
                 .build();
 
         CommandSpec addCommand = CommandSpec.builder()
-                .permission(pluginContainer.getUnqualifiedId() + ".add")
+                .permission(pluginContainer.getId() + ".add")
                 .description(Text.of(TextColors.RED, "Adds a new message"))
                 .executor(new AddCommand(this))
                 .arguments(GenericArguments.remainingJoinedStrings(Text.of("message")))
                 .build();
 
         CommandSpec removeCommand = CommandSpec.builder()
-                .permission(pluginContainer.getUnqualifiedId() + ".remove")
+                .permission(pluginContainer.getId() + ".remove")
                 .description(Text.of(TextColors.RED, "Removes a message from the queued broadcast list"))
                 .executor(new RemoveCommand(this))
                 .arguments(GenericArguments.integer(Text.of("index")))
                 .build();
 
         CommandSpec broadcastCommand = CommandSpec.builder()
-                .permission(pluginContainer.getUnqualifiedId() + ".broadcast")
+                .permission(pluginContainer.getId() + ".broadcast")
                 .description(Text.of(TextColors.RED, "Broadcasts a predefined or new message"))
                 .executor(new BroadcastCommand(this))
                 .arguments(GenericArguments.firstParsing(
@@ -120,7 +120,7 @@ public class ActionBroadcaster {
                 .child(addCommand, "add")
                 .child(removeCommand, "rem", "remove", "delete")
                 .child(broadcastCommand, "broadcast", "announce")
-                .build(), pluginContainer.getUnqualifiedId(), "ab");
+                .build(), pluginContainer.getId(), "ab");
 
         //register events
         game.getEventManager().registerListeners(this, new WelcomeListener(this));
@@ -168,7 +168,7 @@ public class ActionBroadcaster {
         boolean sent = false;
         for (Player player : receivers) {
             //you cannot send action messages with message sink
-            if (player.hasPermission(pluginContainer.getUnqualifiedId() + ".receive")) {
+            if (player.hasPermission(pluginContainer.getId() + ".receive")) {
                 player.sendMessage(ChatTypes.ACTION_BAR, message);
                 sent = true;
             }

@@ -9,7 +9,7 @@
     <packaging>jar</packaging>
 
     <name>ActionBroadcaster</name>
-    <version>0.4.3</version>
+    <version>0.4.4</version>
     <description>Sponge plugin that broadcasts message in a configurable interval into action chat slot</description>
     <url>https://github.com/games647/ActionBroadcaster</url>
 
@@ -94,7 +94,7 @@
         <dependency>
             <groupId>org.spongepowered</groupId>
             <artifactId>spongeapi</artifactId>
-            <version>4.1.0-SNAPSHOT</version>
+            <version>5.0.0-SNAPSHOT</version>
             <type>jar</type>
             <scope>provided</scope>
         </dependency>
