@@ -27,9 +27,7 @@ public class ReloadCommand implements CommandExecutor {
         plugin.getConfigManager().load();
 
         //cancel all tasks and schedule new ones
-        for (Task task : plugin.getGame().getScheduler().getScheduledTasks(plugin)) {
-            task.cancel();
-        }
+        plugin.getGame().getScheduler().getScheduledTasks(plugin).forEach(Task::cancel);
 
         if (plugin.getConfigManager().getConfiguration().isEnabled()) {
             plugin.getGame().getScheduler().createTaskBuilder()

@@ -165,16 +165,12 @@ public class ActionBroadcaster {
     }
 
     public boolean sendMessageToAll(Text message, Collection<Player> receivers) {
-        boolean sent = false;
-        for (Player player : receivers) {
-            //you cannot send action messages with message sink
-            if (player.hasPermission(pluginContainer.getId() + ".receive")) {
-                player.sendMessage(ChatTypes.ACTION_BAR, message);
-                sent = true;
-            }
-        }
+        //you cannot send action messages with message sink
+        long received = receivers.stream()
+                .filter((player) -> player.hasPermission(pluginContainer.getId() + ".receive"))
+                .peek((player) -> player.sendMessage(ChatTypes.ACTION_BAR, message)).count();
 
-        return sent;
+        return received > 0;
     }
 
     public Settings getConfigManager() {
