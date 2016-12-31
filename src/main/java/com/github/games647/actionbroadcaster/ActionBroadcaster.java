@@ -13,7 +13,6 @@ import java.util.Collection;
 import java.util.concurrent.TimeUnit;
 import java.util.function.Consumer;
 
-import me.flibio.updatifier.Updatifier;
 
 import ninja.leaping.configurate.commented.CommentedConfigurationNode;
 import ninja.leaping.configurate.loader.ConfigurationLoader;
@@ -37,7 +36,6 @@ import org.spongepowered.api.text.chat.ChatTypes;
 import org.spongepowered.api.text.format.TextColors;
 import org.spongepowered.api.text.serializer.TextSerializers;
 
-@Updatifier(repoOwner = "games647", repoName = "ActionBroadcaster", version = "0.4.4")
 @Plugin(id = "actionbroadcaster", name = "ActionBroadcaster", version = "0.4.4"
         , url = "https://github.com/games647/ActionBroadcaster"
         , description = "A Sponge minecraft server plugin to create automated messages "
@@ -168,7 +166,8 @@ public class ActionBroadcaster {
         //you cannot send action messages with message sink
         long received = receivers.stream()
                 .filter((player) -> player.hasPermission(pluginContainer.getId() + ".receive"))
-                .peek((player) -> player.sendMessage(ChatTypes.ACTION_BAR, message)).count();
+                .peek((player) -> player.sendMessage(ChatTypes.ACTION_BAR, message))
+                .count();
 
         return received > 0;
     }
