@@ -1,18 +1,12 @@
 package com.github.games647.actionbroadcaster;
 
-import com.github.games647.actionbroadcaster.commands.ListCommand;
 import com.github.games647.actionbroadcaster.commands.AddCommand;
 import com.github.games647.actionbroadcaster.commands.BroadcastCommand;
-import com.github.games647.actionbroadcaster.config.Settings;
+import com.github.games647.actionbroadcaster.commands.ListCommand;
 import com.github.games647.actionbroadcaster.commands.ReloadCommand;
 import com.github.games647.actionbroadcaster.commands.RemoveCommand;
+import com.github.games647.actionbroadcaster.config.Settings;
 import com.google.inject.Inject;
-
-import java.io.File;
-import java.util.Collection;
-import java.util.concurrent.TimeUnit;
-import java.util.function.Consumer;
-
 
 import ninja.leaping.configurate.commented.CommentedConfigurationNode;
 import ninja.leaping.configurate.loader.ConfigurationLoader;
@@ -36,6 +30,11 @@ import org.spongepowered.api.text.chat.ChatTypes;
 import org.spongepowered.api.text.format.TextColors;
 import org.spongepowered.api.text.serializer.TextSerializers;
 
+import java.nio.file.Path;
+import java.util.Collection;
+import java.util.concurrent.TimeUnit;
+import java.util.function.Consumer;
+
 @Plugin(id = "actionbroadcaster", name = "ActionBroadcaster", version = "0.4.4"
         , url = "https://github.com/games647/ActionBroadcaster"
         , description = "A Sponge minecraft server plugin to create automated messages "
@@ -51,7 +50,7 @@ public class ActionBroadcaster {
 
     @Inject
     @DefaultConfig(sharedRoot = true)
-    private File defaultConfigFile;
+    private Path defaultConfigFile;
 
     @Inject
     @DefaultConfig(sharedRoot = true)
