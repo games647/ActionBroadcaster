@@ -35,7 +35,7 @@ public class Settings {
     }
 
     public void load() {
-        if (!Files.exists(defaultConfigFile)) {
+        if (Files.notExists(defaultConfigFile)) {
             try {
                 Files.createFile(defaultConfigFile);
             } catch (IOException ioExc) {
