@@ -8,6 +8,11 @@ import com.github.games647.actionbroadcaster.commands.RemoveCommand;
 import com.github.games647.actionbroadcaster.config.Settings;
 import com.google.inject.Inject;
 
+import java.nio.file.Path;
+import java.util.Collection;
+import java.util.concurrent.TimeUnit;
+import java.util.function.Consumer;
+
 import ninja.leaping.configurate.commented.CommentedConfigurationNode;
 import ninja.leaping.configurate.loader.ConfigurationLoader;
 
@@ -30,15 +35,8 @@ import org.spongepowered.api.text.chat.ChatTypes;
 import org.spongepowered.api.text.format.TextColors;
 import org.spongepowered.api.text.serializer.TextSerializers;
 
-import java.nio.file.Path;
-import java.util.Collection;
-import java.util.concurrent.TimeUnit;
-import java.util.function.Consumer;
-
-@Plugin(id = "actionbroadcaster", name = "ActionBroadcaster", version = "0.4.4"
-        , url = "https://github.com/games647/ActionBroadcaster"
-        , description = "A Sponge minecraft server plugin to create automated messages "
-                + "that will be printed into the action chat slot.")
+@Plugin(id = PomData.ARTIFACT_ID, name = PomData.NAME, version = PomData.VERSION
+        , url = PomData.URL, description = PomData.DESCRIPTION)
 public class ActionBroadcaster {
 
     //disappear time from an action message in seconds which is default in minecraft

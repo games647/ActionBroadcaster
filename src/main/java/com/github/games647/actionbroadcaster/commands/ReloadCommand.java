@@ -1,7 +1,7 @@
 package com.github.games647.actionbroadcaster.commands;
 
-import com.github.games647.actionbroadcaster.BroadcastTask;
 import com.github.games647.actionbroadcaster.ActionBroadcaster;
+import com.github.games647.actionbroadcaster.BroadcastTask;
 
 import java.util.concurrent.TimeUnit;
 
