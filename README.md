@@ -9,6 +9,6 @@ Tested against:
 
 	Minecraft (Client): 1.8.8
 
-Screenshot:
+Images:
 
-![Minecraft image picture](http://fs2.directupload.net/images/150803/de9kcu25.png)
+![Minecraft image picture](https://i.imgur.com/HZOtDqd.png)

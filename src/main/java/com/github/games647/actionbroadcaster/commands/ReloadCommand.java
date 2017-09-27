@@ -5,6 +5,7 @@ import com.github.games647.actionbroadcaster.BroadcastTask;
 
 import java.util.concurrent.TimeUnit;
 
+import org.spongepowered.api.Sponge;
 import org.spongepowered.api.command.CommandException;
 import org.spongepowered.api.command.CommandResult;
 import org.spongepowered.api.command.CommandSource;
@@ -27,10 +28,10 @@ public class ReloadCommand implements CommandExecutor {
         plugin.getConfigManager().load();
 
         //cancel all tasks and schedule new ones
-        plugin.getGame().getScheduler().getScheduledTasks(plugin).forEach(Task::cancel);
+        Sponge.getScheduler().getScheduledTasks(plugin).forEach(Task::cancel);
 
         if (plugin.getConfigManager().getConfiguration().isEnabled()) {
-            plugin.getGame().getScheduler().createTaskBuilder()
+            Sponge.getScheduler().createTaskBuilder()
                     .execute(new BroadcastTask(plugin))
                     .name("Action Broadcaster")
                     .interval(plugin.getConfigManager().getConfiguration().getInterval(), TimeUnit.SECONDS)

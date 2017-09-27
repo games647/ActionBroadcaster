@@ -5,6 +5,7 @@ import com.github.games647.actionbroadcaster.config.Config;
 import java.util.List;
 import java.util.Random;
 
+import org.spongepowered.api.Sponge;
 import org.spongepowered.api.text.Text;
 
 public class BroadcastTask implements Runnable {
@@ -22,7 +23,7 @@ public class BroadcastTask implements Runnable {
         Config config = plugin.getConfigManager().getConfiguration();
         List<String> messages = config.getMessages();
         int minPlayers = config.getMinPlayers();
-        if (messages.isEmpty() || minPlayers > plugin.getGame().getServer().getOnlinePlayers().size()) {
+        if (messages.isEmpty() || minPlayers > Sponge.getServer().getOnlinePlayers().size()) {
             return;
         }
 
@@ -35,6 +36,6 @@ public class BroadcastTask implements Runnable {
         }
 
         Text message = plugin.translateColorCodes(messages.get(currentIndex));
-        plugin.broadcast(message, true, plugin.getGame().getServer().getOnlinePlayers());
+        plugin.broadcast(message, true, Sponge.getServer().getOnlinePlayers());
     }
 }

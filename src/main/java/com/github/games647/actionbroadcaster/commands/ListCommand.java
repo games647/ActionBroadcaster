@@ -1,10 +1,12 @@
 package com.github.games647.actionbroadcaster.commands;
 
 import com.github.games647.actionbroadcaster.ActionBroadcaster;
+import com.github.games647.actionbroadcaster.PomData;
 import com.google.common.collect.Lists;
 
 import java.util.List;
 
+import org.spongepowered.api.Sponge;
 import org.spongepowered.api.command.CommandException;
 import org.spongepowered.api.command.CommandResult;
 import org.spongepowered.api.command.CommandSource;
@@ -41,7 +43,7 @@ public class ListCommand implements CommandExecutor {
         }
 
 
-        PaginationService paginationService = plugin.getGame().getServiceManager().provideUnchecked(PaginationService.class);
+        PaginationService paginationService = Sponge.getServiceManager().provideUnchecked(PaginationService.class);
         Builder builder = paginationService.builder();
         builder.title(Text
                 .builder()
@@ -67,13 +69,13 @@ public class ListCommand implements CommandExecutor {
         return Text.builder(plugin.translateColorCodes(lineText), "")
                 .onHover(TextActions.showText(Text.of(text)))
                 .onClick(TextActions
-                        .runCommand('/' + plugin.getContainer().getId() + " broadcast " + (index + 1)))
+                        .runCommand('/' + PomData.ARTIFACT_ID + " broadcast " + (index + 1)))
                 //do not add colors to the text message in order to show the actual results
                 .append(Text
                         .builder(" ✖")
                         .color(TextColors.DARK_RED)
                         .onClick(TextActions
-                                .runCommand('/' + plugin.getContainer().getId() + " remove " + (index + 1)))
+                                .runCommand('/' + PomData.ARTIFACT_ID + " remove " + (index + 1)))
                         .onHover(TextActions
                                 .showText(Text.of(TextColors.RED, TextStyles.ITALIC, "Removes this message")))
                         .build())

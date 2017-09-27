@@ -13,13 +13,9 @@ import java.util.Collection;
 import java.util.concurrent.TimeUnit;
 import java.util.function.Consumer;
 
-import ninja.leaping.configurate.commented.CommentedConfigurationNode;
-import ninja.leaping.configurate.loader.ConfigurationLoader;
-
 import org.slf4j.Logger;
-import org.spongepowered.api.Game;
+import org.spongepowered.api.Sponge;
 import org.spongepowered.api.command.CommandManager;
-import org.spongepowered.api.command.args.GenericArguments;
 import org.spongepowered.api.command.spec.CommandSpec;
 import org.spongepowered.api.config.DefaultConfig;
 import org.spongepowered.api.entity.living.player.Player;
@@ -28,12 +24,16 @@ import org.spongepowered.api.event.game.state.GameAboutToStartServerEvent;
 import org.spongepowered.api.event.game.state.GameInitializationEvent;
 import org.spongepowered.api.event.game.state.GamePreInitializationEvent;
 import org.spongepowered.api.plugin.Plugin;
-import org.spongepowered.api.plugin.PluginContainer;
 import org.spongepowered.api.scheduler.Task;
 import org.spongepowered.api.text.Text;
 import org.spongepowered.api.text.chat.ChatTypes;
 import org.spongepowered.api.text.format.TextColors;
 import org.spongepowered.api.text.serializer.TextSerializers;
+
+import static org.spongepowered.api.command.args.GenericArguments.firstParsing;
+import static org.spongepowered.api.command.args.GenericArguments.integer;
+import static org.spongepowered.api.command.args.GenericArguments.remainingJoinedStrings;
+import static org.spongepowered.api.text.Text.of;
 
 @Plugin(id = PomData.ARTIFACT_ID, name = PomData.NAME, version = PomData.VERSION
         , url = PomData.URL, description = PomData.DESCRIPTION)
@@ -42,71 +42,60 @@ public class ActionBroadcaster {
     //disappear time from an action message in seconds which is default in minecraft
     private static final int DISAPPEAR_TIME = 2;
 
-    private final PluginContainer pluginContainer;
-    private final Logger logger;
-    private final Game game;
+    @Inject
+    private Logger logger;
 
     @Inject
     @DefaultConfig(sharedRoot = true)
     private Path defaultConfigFile;
 
-    @Inject
-    @DefaultConfig(sharedRoot = true)
-    private ConfigurationLoader<CommentedConfigurationNode> configManager;
-
     private Settings configuration;
-
-    @Inject
-    public ActionBroadcaster(Logger logger, PluginContainer pluginContainer, Game game) {
-        this.logger = logger;
-        this.pluginContainer = pluginContainer;
-        this.game = game;
-    }
 
     @Listener //During this state, the plugin gets ready for initialization. Logger and config
     public void onPreInit(GamePreInitializationEvent preInitEvent) {
-        configuration = new Settings(configManager, defaultConfigFile, this);
+        configuration = new Settings(this, defaultConfigFile);
         configuration.load();
     }
 
-    @Listener //During this state, the plugin should finish any work needed in order to be functional. Commands register + events
+    @Listener
+    //During this state, the plugin should finish any work needed in order to be functional. Commands register + events
     public void onInit(GameInitializationEvent initEvent) {
         //register commands
-        CommandManager commandDispatcher = game.getCommandManager();
+        CommandManager commandDispatcher = Sponge.getCommandManager();
 
         CommandSpec reloadCommand = CommandSpec.builder()
-                .permission(pluginContainer.getId() + ".reload")
-                .description(Text.of(TextColors.RED, "Reloads the entire plugin"))
+                .permission(PomData.ARTIFACT_ID + ".reload")
+                .description(of(TextColors.RED, "Reloads the entire plugin"))
                 .executor(new ReloadCommand(this))
                 .build();
 
         CommandSpec listCommand = CommandSpec.builder()
-                .permission(pluginContainer.getId()+ ".list")
-                .description(Text.of(TextColors.RED, "Lists all messages"))
+                .permission(PomData.ARTIFACT_ID + ".list")
+                .description(of(TextColors.RED, "Lists all messages"))
                 .executor(new ListCommand(this))
                 .build();
 
         CommandSpec addCommand = CommandSpec.builder()
-                .permission(pluginContainer.getId() + ".add")
-                .description(Text.of(TextColors.RED, "Adds a new message"))
+                .permission(PomData.ARTIFACT_ID + ".add")
+                .description(of(TextColors.RED, "Adds a new message"))
                 .executor(new AddCommand(this))
-                .arguments(GenericArguments.remainingJoinedStrings(Text.of("message")))
+                .arguments(remainingJoinedStrings(of("message")))
                 .build();
 
         CommandSpec removeCommand = CommandSpec.builder()
-                .permission(pluginContainer.getId() + ".remove")
-                .description(Text.of(TextColors.RED, "Removes a message from the queued broadcast list"))
+                .permission(PomData.ARTIFACT_ID + ".remove")
+                .description(of(TextColors.RED, "Removes a message from the queued broadcast list"))
                 .executor(new RemoveCommand(this))
-                .arguments(GenericArguments.integer(Text.of("index")))
+                .arguments(integer(of("index")))
                 .build();
 
         CommandSpec broadcastCommand = CommandSpec.builder()
-                .permission(pluginContainer.getId() + ".broadcast")
-                .description(Text.of(TextColors.RED, "Broadcasts a predefined or new message"))
+                .permission(PomData.ARTIFACT_ID + ".broadcast")
+                .description(of(TextColors.RED, "Broadcasts a predefined or new message"))
                 .executor(new BroadcastCommand(this))
-                .arguments(GenericArguments.firstParsing(
-                        GenericArguments.integer(Text.of("index")),
-                        GenericArguments.remainingJoinedStrings(Text.of("message"))))
+                .arguments(firstParsing(
+                        integer(of("index")),
+                        remainingJoinedStrings(of("message"))))
                 .build();
 
         commandDispatcher.register(this, CommandSpec.builder()
@@ -115,17 +104,17 @@ public class ActionBroadcaster {
                 .child(addCommand, "add")
                 .child(removeCommand, "rem", "remove", "delete")
                 .child(broadcastCommand, "broadcast", "announce")
-                .build(), pluginContainer.getId(), "ab");
+                .build(), PomData.ARTIFACT_ID, "ab");
 
         //register events
-        game.getEventManager().registerListeners(this, new WelcomeListener(this));
+        Sponge.getEventManager().registerListeners(this, new WelcomeListener(this));
     }
 
     @Listener
     public void onServerStart(GameAboutToStartServerEvent serverAboutToStartEvent) {
         //The server instance exists, but worlds are not yet loaded.
         if (configuration.getConfiguration() != null && configuration.getConfiguration().isEnabled()) {
-            game.getScheduler().createTaskBuilder()
+            Sponge.getScheduler().createTaskBuilder()
                     .execute(new BroadcastTask(this))
                     .name("Action Broadcaster")
                     .interval(configuration.getConfiguration().getInterval(), TimeUnit.SECONDS)
@@ -138,7 +127,7 @@ public class ActionBroadcaster {
 
         if (sendMessageToAll(message, receivers) && schedule
                 && remainingAppear > 0 && remainingAppear < configuration.getConfiguration().getInterval()) {
-            game.getScheduler().createTaskBuilder()
+            Sponge.getScheduler().createTaskBuilder()
                     .delay(remainingAppear % DISAPPEAR_TIME, TimeUnit.SECONDS)
                     .interval(DISAPPEAR_TIME, TimeUnit.SECONDS)
                     .execute(new Consumer<Task>() {
@@ -162,7 +151,7 @@ public class ActionBroadcaster {
     public boolean sendMessageToAll(Text message, Collection<Player> receivers) {
         //you cannot send action messages with message sink
         long received = receivers.stream()
-                .filter((player) -> player.hasPermission(pluginContainer.getId() + ".receive"))
+                .filter((player) -> player.hasPermission(PomData.ARTIFACT_ID + ".receive"))
                 .peek((player) -> player.sendMessage(ChatTypes.ACTION_BAR, message))
                 .count();
 
@@ -173,15 +162,7 @@ public class ActionBroadcaster {
         return configuration;
     }
 
-    public PluginContainer getContainer() {
-        return pluginContainer;
-    }
-
     public Logger getLogger() {
         return logger;
-    }
-
-    public Game getGame() {
-        return game;
     }
 }
