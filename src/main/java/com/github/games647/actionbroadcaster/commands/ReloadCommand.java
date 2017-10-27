@@ -2,6 +2,9 @@ package com.github.games647.actionbroadcaster.commands;
 
 import com.github.games647.actionbroadcaster.ActionBroadcaster;
 import com.github.games647.actionbroadcaster.BroadcastTask;
+import com.github.games647.actionbroadcaster.config.Settings;
+import com.google.inject.Inject;
+import com.google.inject.Injector;
 
 import java.util.concurrent.TimeUnit;
 
@@ -18,23 +21,28 @@ import org.spongepowered.api.text.format.TextColors;
 public class ReloadCommand implements CommandExecutor {
 
     private final ActionBroadcaster plugin;
+    private final Injector injector;
+    private final Settings settings;
 
-    public ReloadCommand(ActionBroadcaster plugin) {
+    @Inject
+    ReloadCommand(ActionBroadcaster plugin, Settings settings, Injector injector) {
         this.plugin = plugin;
+        this.settings = settings;
+        this.injector = injector;
     }
 
     @Override
     public CommandResult execute(CommandSource source, CommandContext args) throws CommandException {
-        plugin.getConfigManager().load();
+        settings.load();
 
         //cancel all tasks and schedule new ones
         Sponge.getScheduler().getScheduledTasks(plugin).forEach(Task::cancel);
 
-        if (plugin.getConfigManager().getConfiguration().isEnabled()) {
-            Sponge.getScheduler().createTaskBuilder()
-                    .execute(new BroadcastTask(plugin))
+        if (settings.getConfiguration().isEnabled()) {
+            Task.builder()
+                    .execute(injector.getInstance(BroadcastTask.class))
                     .name("Action Broadcaster")
-                    .interval(plugin.getConfigManager().getConfiguration().getInterval(), TimeUnit.SECONDS)
+                    .interval(settings.getConfiguration().getInterval(), TimeUnit.SECONDS)
                     .submit(plugin);
         }
 

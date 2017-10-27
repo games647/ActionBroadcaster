@@ -1,6 +1,8 @@
 package com.github.games647.actionbroadcaster.commands;
 
 import com.github.games647.actionbroadcaster.ActionBroadcaster;
+import com.github.games647.actionbroadcaster.config.Settings;
+import com.google.inject.Inject;
 
 import java.util.List;
 
@@ -15,9 +17,12 @@ import org.spongepowered.api.text.format.TextColors;
 public class AddCommand implements CommandExecutor {
 
     private final ActionBroadcaster plugin;
+    private final Settings settings;
 
-    public AddCommand(ActionBroadcaster plugin) {
+    @Inject
+    AddCommand(ActionBroadcaster plugin, Settings settings) {
         this.plugin = plugin;
+        this.settings = settings;
     }
 
     @Override
@@ -25,10 +30,10 @@ public class AddCommand implements CommandExecutor {
         //we require it on registration
         String message = args.<String>getOne("message").get();
 
-        List<String> messages = plugin.getConfigManager().getConfiguration().getMessages();
+        List<String> messages = settings.getConfiguration().getMessages();
         messages.add(message);
 
-        plugin.getConfigManager().save();
+        settings.save();
         source.sendMessage(Text.of(TextColors.DARK_GREEN, "Added following message: "));
         source.sendMessage(plugin.translateColorCodes(message));
 

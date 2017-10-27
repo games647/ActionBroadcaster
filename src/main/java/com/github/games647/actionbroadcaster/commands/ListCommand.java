@@ -2,18 +2,18 @@ package com.github.games647.actionbroadcaster.commands;
 
 import com.github.games647.actionbroadcaster.ActionBroadcaster;
 import com.github.games647.actionbroadcaster.PomData;
+import com.github.games647.actionbroadcaster.config.Settings;
 import com.google.common.collect.Lists;
+import com.google.inject.Inject;
 
 import java.util.List;
 
-import org.spongepowered.api.Sponge;
 import org.spongepowered.api.command.CommandException;
 import org.spongepowered.api.command.CommandResult;
 import org.spongepowered.api.command.CommandSource;
 import org.spongepowered.api.command.args.CommandContext;
 import org.spongepowered.api.command.spec.CommandExecutor;
-import org.spongepowered.api.service.pagination.PaginationList.Builder;
-import org.spongepowered.api.service.pagination.PaginationService;
+import org.spongepowered.api.service.pagination.PaginationList;
 import org.spongepowered.api.text.Text;
 import org.spongepowered.api.text.action.TextActions;
 import org.spongepowered.api.text.format.TextColors;
@@ -22,14 +22,17 @@ import org.spongepowered.api.text.format.TextStyles;
 public class ListCommand implements CommandExecutor {
 
     private final ActionBroadcaster plugin;
+    private final Settings settings;
 
-    public ListCommand(ActionBroadcaster plugin) {
+    @Inject
+    ListCommand(ActionBroadcaster plugin, Settings settings) {
         this.plugin = plugin;
+        this.settings = settings;
     }
 
     @Override
     public CommandResult execute(CommandSource source, CommandContext args) throws CommandException {
-        List<String> messages = plugin.getConfigManager().getConfiguration().getMessages();
+        List<String> messages = settings.getConfiguration().getMessages();
 
         List<Text> contents = Lists.newArrayList();
         for (int i = 0; i < messages.size(); i++) {
@@ -42,10 +45,8 @@ public class ListCommand implements CommandExecutor {
             return CommandResult.success();
         }
 
-
-        PaginationService paginationService = Sponge.getServiceManager().provideUnchecked(PaginationService.class);
-        Builder builder = paginationService.builder();
-        builder.title(Text
+        PaginationList.builder()
+                .title(Text
                 .builder()
                 .color(TextColors.DARK_BLUE)
                 .append(Text

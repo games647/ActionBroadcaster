@@ -1,6 +1,8 @@
 package com.github.games647.actionbroadcaster.commands;
 
 import com.github.games647.actionbroadcaster.ActionBroadcaster;
+import com.github.games647.actionbroadcaster.config.Settings;
+import com.google.inject.Inject;
 
 import java.util.List;
 
@@ -15,22 +17,25 @@ import org.spongepowered.api.text.format.TextColors;
 public class RemoveCommand implements CommandExecutor {
 
     private final ActionBroadcaster plugin;
+    private final Settings settings;
 
-    public RemoveCommand(ActionBroadcaster plugin) {
+    @Inject
+    RemoveCommand(ActionBroadcaster plugin, Settings settings) {
         this.plugin = plugin;
+        this.settings = settings;
     }
 
     @Override
     public CommandResult execute(CommandSource source, CommandContext args) throws CommandException {
         int index = args.<Integer>getOne("index").get();
 
-        List<String> messages = plugin.getConfigManager().getConfiguration().getMessages();
+        List<String> messages = settings.getConfiguration().getMessages();
         if (index > messages.size()) {
             source.sendMessage(Text.of(TextColors.DARK_RED, index + '/' + messages.size()
                     + " Number is higher than the available messages"));
         } else {
             Text removedMessage = plugin.translateColorCodes(messages.remove(index - 1));
-            plugin.getConfigManager().save();
+            settings.save();
 
             source.sendMessage(Text.of(TextColors.DARK_GREEN, "Removed the following message"));
             source.sendMessage(removedMessage);

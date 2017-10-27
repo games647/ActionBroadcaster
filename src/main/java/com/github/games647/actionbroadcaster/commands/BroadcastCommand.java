@@ -1,6 +1,8 @@
 package com.github.games647.actionbroadcaster.commands;
 
 import com.github.games647.actionbroadcaster.ActionBroadcaster;
+import com.github.games647.actionbroadcaster.config.Settings;
+import com.google.inject.Inject;
 
 import java.util.List;
 import java.util.Optional;
@@ -17,9 +19,12 @@ import org.spongepowered.api.text.format.TextColors;
 public class BroadcastCommand implements CommandExecutor {
 
     private final ActionBroadcaster plugin;
+    private final Settings settings;
 
-    public BroadcastCommand(ActionBroadcaster plugin) {
+    @Inject
+    BroadcastCommand(ActionBroadcaster plugin, Settings settings) {
         this.plugin = plugin;
+        this.settings = settings;
     }
 
     @Override
@@ -28,7 +33,7 @@ public class BroadcastCommand implements CommandExecutor {
 
         if (optionalIndex.isPresent()) {
             int index = optionalIndex.get();
-            List<String> messages = plugin.getConfigManager().getConfiguration().getMessages();
+            List<String> messages = settings.getConfiguration().getMessages();
             if (index > messages.size()) {
                 source.sendMessage(Text.of(TextColors.DARK_RED, index + "/" + messages.size()
                         + " Number is higher than the available messages"));
