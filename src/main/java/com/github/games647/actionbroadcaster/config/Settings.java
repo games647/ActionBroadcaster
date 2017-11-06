@@ -1,16 +1,15 @@
 package com.github.games647.actionbroadcaster.config;
 
-import com.google.inject.Inject;
-
 import java.io.IOException;
+import java.nio.file.Path;
 
 import ninja.leaping.configurate.commented.CommentedConfigurationNode;
+import ninja.leaping.configurate.hocon.HoconConfigurationLoader;
 import ninja.leaping.configurate.loader.ConfigurationLoader;
 import ninja.leaping.configurate.objectmapping.ObjectMapper;
 import ninja.leaping.configurate.objectmapping.ObjectMappingException;
 
 import org.slf4j.Logger;
-import org.spongepowered.api.config.DefaultConfig;
 
 public class Settings {
 
@@ -20,11 +19,9 @@ public class Settings {
     private ObjectMapper<Config>.BoundInstance configMapper;
     private CommentedConfigurationNode rootNode;
 
-    @Inject
-    public Settings(Logger logger,
-                    @DefaultConfig(sharedRoot = true) ConfigurationLoader<CommentedConfigurationNode> configManager) {
+    public Settings(Logger logger, Path configFile) {
         this.logger = logger;
-        this.configManager = configManager;
+        this.configManager = HoconConfigurationLoader.builder().setPath(configFile).build();
 
         try {
             configMapper = ObjectMapper.forClass(Config.class).bindToNew();
