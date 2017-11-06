@@ -5,7 +5,7 @@ import com.github.games647.actionbroadcaster.config.Settings;
 import com.google.inject.Inject;
 
 import java.util.List;
-import java.util.Random;
+import java.util.concurrent.ThreadLocalRandom;
 
 import org.spongepowered.api.Sponge;
 import org.spongepowered.api.text.Text;
@@ -33,7 +33,7 @@ public class BroadcastTask implements Runnable {
 
         currentIndex++;
         if (config.isRandom()) {
-            currentIndex = new Random().nextInt(messages.size());
+            currentIndex = ThreadLocalRandom.current().nextInt(messages.size());
         } else if (currentIndex >= messages.size()) {
             //we reached the end
             currentIndex = 0;

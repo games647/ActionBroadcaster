@@ -11,6 +11,9 @@ public class Config {
     @Setting(comment = "Disable the entire broadcast functionality")
     private boolean enabled = true;
 
+    @Setting(comment = "Should the message be broadcasted into chat or into the action bar")
+    private boolean chat = false;
+
     @Setting(comment = "Interval in seconds to wait for the next message")
     private int interval = 320;
 
@@ -32,6 +35,10 @@ public class Config {
 
     public boolean isEnabled() {
         return enabled;
+    }
+
+    public boolean isChat() {
+        return chat;
     }
 
     public int getInterval() {

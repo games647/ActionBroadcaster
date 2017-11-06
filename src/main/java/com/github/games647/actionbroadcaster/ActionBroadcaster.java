@@ -148,8 +148,14 @@ public class ActionBroadcaster {
     private boolean sendMessageToAll(Text message, Collection<Player> receivers) {
         //you cannot send action messages with message sink
         long received = receivers.stream()
-                .filter((player) -> player.hasPermission(PomData.ARTIFACT_ID + ".receive"))
-                .peek((player) -> player.sendMessage(ChatTypes.ACTION_BAR, message))
+                .filter(player -> player.hasPermission(PomData.ARTIFACT_ID + ".receive"))
+                .peek(player -> {
+                    if (configuration.getConfiguration().isChat()) {
+                        player.sendMessage(ChatTypes.CHAT, message);
+                    } else {
+                        player.sendMessage(ChatTypes.ACTION_BAR, message);
+                    }
+                })
                 .count();
 
         return received > 0;
