@@ -62,6 +62,6 @@ public class Config {
     }
 
     public int getAppearanceTime() {
-        return appearanceTime;
+        return chat ? 1 :appearanceTime;
     }
 }

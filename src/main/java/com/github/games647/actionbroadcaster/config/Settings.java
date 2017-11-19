@@ -1,6 +1,7 @@
 package com.github.games647.actionbroadcaster.config;
 
 import com.google.inject.Inject;
+import com.google.inject.Singleton;
 
 import java.io.IOException;
 
@@ -12,6 +13,7 @@ import ninja.leaping.configurate.objectmapping.ObjectMappingException;
 import org.slf4j.Logger;
 import org.spongepowered.api.config.DefaultConfig;
 
+@Singleton
 public class Settings {
 
     private final Logger logger;
