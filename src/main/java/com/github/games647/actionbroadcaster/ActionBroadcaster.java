@@ -9,16 +9,13 @@ import com.github.games647.actionbroadcaster.config.Settings;
 import com.google.inject.Inject;
 import com.google.inject.Injector;
 
-import java.nio.file.Path;
 import java.util.Collection;
 import java.util.concurrent.TimeUnit;
 import java.util.function.Consumer;
 
-import org.slf4j.Logger;
 import org.spongepowered.api.Sponge;
 import org.spongepowered.api.command.CommandManager;
 import org.spongepowered.api.command.spec.CommandSpec;
-import org.spongepowered.api.config.DefaultConfig;
 import org.spongepowered.api.entity.living.player.Player;
 import org.spongepowered.api.event.Listener;
 import org.spongepowered.api.event.game.state.GameAboutToStartServerEvent;
@@ -47,9 +44,9 @@ public class ActionBroadcaster {
     private final Settings configuration;
     
     @Inject
-    ActionBroadcaster(Injector injector, Logger logger, @DefaultConfig(sharedRoot = true) Path configFile) {
-        this.configuration = new Settings(logger, configFile);
-        this.injector = injector.createChildInjector(binder -> binder.bind(Settings.class).toInstance(configuration));
+    public ActionBroadcaster(Injector injector, Settings settings) {
+        this.injector = injector;
+        this.configuration = settings;
     }
 
     @Listener //During this state, the plugin gets ready for initialization. Logger and config
@@ -63,7 +60,6 @@ public class ActionBroadcaster {
         //register commands
         CommandManager commandDispatcher = Sponge.getCommandManager();
 
-        System.out.println(injector.getBinding(Settings.class).getProvider().get());
         CommandSpec reloadCommand = CommandSpec.builder()
                 .permission(PomData.ARTIFACT_ID + ".reload")
                 .description(of(TextColors.RED, "Reloads the entire plugin"))
@@ -115,7 +111,6 @@ public class ActionBroadcaster {
     public void onServerStart(GameAboutToStartServerEvent serverAboutToStartEvent) {
         //The server instance exists, but worlds are not yet loaded.
         if (configuration.getConfiguration() != null && configuration.getConfiguration().isEnabled()) {
-            System.out.println(injector.getBinding(Settings.class).getProvider().get());
             Task.builder()
                     .execute(injector.getInstance(BroadcastTask.class))
                     .name("Action Broadcaster")
