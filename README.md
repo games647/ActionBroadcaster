@@ -1,6 +1,6 @@
 # ActionBroadcaster
 
-A Sponge minecraft server plugin to create automated messages
+A Sponge Minecraft server plugin to create automated messages
 that will be printed into the action chat slot.
 
 ## Features

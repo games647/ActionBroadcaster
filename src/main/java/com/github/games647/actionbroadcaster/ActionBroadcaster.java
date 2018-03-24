@@ -33,11 +33,11 @@ import static org.spongepowered.api.command.args.GenericArguments.integer;
 import static org.spongepowered.api.command.args.GenericArguments.remainingJoinedStrings;
 import static org.spongepowered.api.text.Text.of;
 
-@Plugin(id = PomData.ARTIFACT_ID, name = PomData.NAME, version = PomData.VERSION
-        , url = PomData.URL, description = PomData.DESCRIPTION)
+@Plugin(id = PomData.ARTIFACT_ID, name = PomData.NAME, version = PomData.VERSION,
+        url = PomData.URL, description = PomData.DESCRIPTION)
 public class ActionBroadcaster {
 
-    //disappear time from an action message in seconds which is default in minecraft
+    //disappear time from an action message in seconds which is default in Minecraft
     private static final int DISAPPEAR_TIME = 2;
 
     private final Injector injector;

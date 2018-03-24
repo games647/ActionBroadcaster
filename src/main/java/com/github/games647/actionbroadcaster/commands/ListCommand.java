@@ -3,10 +3,12 @@ package com.github.games647.actionbroadcaster.commands;
 import com.github.games647.actionbroadcaster.ActionBroadcaster;
 import com.github.games647.actionbroadcaster.PomData;
 import com.github.games647.actionbroadcaster.config.Settings;
-import com.google.common.collect.Lists;
 import com.google.inject.Inject;
 
+import java.util.ArrayList;
 import java.util.List;
+
+import javax.print.attribute.TextSyntax;
 
 import org.spongepowered.api.command.CommandException;
 import org.spongepowered.api.command.CommandResult;
@@ -34,7 +36,7 @@ public class ListCommand implements CommandExecutor {
     public CommandResult execute(CommandSource source, CommandContext args) throws CommandException {
         List<String> messages = settings.getConfiguration().getMessages();
 
-        List<Text> contents = Lists.newArrayList();
+        List<Text> contents = new ArrayList<>();
         for (int i = 0; i < messages.size(); i++) {
             String message = messages.get(i);
             contents.add(buildMessage(i, message));
@@ -47,13 +49,13 @@ public class ListCommand implements CommandExecutor {
 
         PaginationList.builder()
                 .title(Text
-                .builder()
-                .color(TextColors.DARK_BLUE)
-                .append(Text
-                        .builder("Messages")
-                        .color(TextColors.YELLOW)
+                        .builder()
+                        .color(TextColors.DARK_BLUE)
+                        .append(Text
+                                .builder("Messages")
+                                .color(TextColors.YELLOW)
+                                .build())
                         .build())
-                .build())
                 .padding(Text.of("="))
                 .contents(contents)
                 .sendTo(source);
@@ -62,12 +64,15 @@ public class ListCommand implements CommandExecutor {
     }
 
     private Text buildMessage(int index, String text) {
-        String lineText = text;
-        if (lineText.length() > 32) {
-            lineText = lineText.substring(0, 32) + "...";
+        String textWithOutLineBreaks = text.replace("\n", "/newline");
+
+        Text line = plugin.translateColorCodes(textWithOutLineBreaks);
+        if (textWithOutLineBreaks.length() > 45) {
+            line = Text.builder().append(plugin.translateColorCodes(textWithOutLineBreaks.substring(0, 45)))
+                    .append(Text.of(TextStyles.RESET, TextColors.YELLOW, " ...")).build();
         }
 
-        return Text.builder(plugin.translateColorCodes(lineText), "")
+        return Text.builder().append(line)
                 .onHover(TextActions.showText(Text.of(text)))
                 .onClick(TextActions
                         .runCommand('/' + PomData.ARTIFACT_ID + " broadcast " + (index + 1)))
